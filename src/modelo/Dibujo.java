@@ -108,7 +108,7 @@ public class Dibujo {
         if (clavesColores.containsValue(color))
         {
             throw new MissingKeyOrValueException("El color debe ser unico en la seleccion");
-        } else if(color.equals("#0000"))
+        } else if(color.equals("#FFFFFF"))
         {
             throw new MissingKeyOrValueException("El color blanco no puede ser añadidio a la seleccion");
         }
@@ -166,7 +166,7 @@ public class Dibujo {
                 return c.getColor();
             }
         }
-        return "#0000"; // Cuando no se encuantra color en una cuadrícula, el color por defecto siempre será blanco
+        return "#FFFFFF"; // Cuando no se encuantra color en una cuadrícula, el color por defecto siempre será blanco
     }
 
     public void cambiarColorCuadricula(int indiceX, int indiceY, String color) throws MissingSearchException
