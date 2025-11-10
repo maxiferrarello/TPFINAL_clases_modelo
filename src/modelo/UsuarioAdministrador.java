@@ -50,7 +50,7 @@ public class UsuarioAdministrador extends Usuario {
 
 
 
-    /// getter y setters
+    /// getters y setters
 
     public PermisosAdmin getNivelAdmin() {
         return nivelAdmin;
@@ -72,15 +72,16 @@ public class UsuarioAdministrador extends Usuario {
 
     /// metodos para el registro de las acciones
 
-    public boolean ingresarAccionAlRegistro(String accion) {
-        LocalDateTime fechahora = LocalDateTime.now();
+    public void ingresarAccionAlRegistro(String accion) throws MissingKeyOrValueException
+    {
+        LocalDateTime fechaHora = LocalDateTime.now();
 
-        if (!registroAcciones.containsKey(fechahora))
+        if (registroAcciones.containsKey(fechaHora))
         {
-            registroAcciones.put(fechahora, accion);
-            return true;
+          throw new MissingKeyOrValueException("La fecha ingresada ya esta registrada");
         }
-        return false; // si la clave de la accion es igual no la ingresa y devuelve false (no se si necesitaran comprobar eso pero por las dudas lo hago asi)
+
+        registroAcciones.put(fechaHora, accion);
     }
 
     public boolean eliminarAccionDelRegistro(LocalDateTime fechaHora, String accion)
@@ -88,7 +89,7 @@ public class UsuarioAdministrador extends Usuario {
        return registroAcciones.remove(fechaHora,accion);
     }
 
-    public List<String> buscarAcciones(int anio, int mes, int dia)
+    public List<String> buscarAcciones(LocalDateTime fechaIngresada)
     {
         List<String> accionEncontrada = new ArrayList<>();
 
@@ -96,10 +97,7 @@ public class UsuarioAdministrador extends Usuario {
         {
             LocalDateTime fechaHora = entrada.getKey();
 
-            if (fechaHora.getYear() == anio &&
-                    fechaHora.getMonthValue() == mes &&
-                    fechaHora.getDayOfMonth() == dia) {
-
+            if (fechaHora.equals(fechaIngresada)) { // Los atributos de LocalDateTime son variados e importantes, por eso hay que incluirlos a todos en la comprobacion (error mio desde el UML)
                 accionEncontrada.add(entrada.getValue());
             }
         }

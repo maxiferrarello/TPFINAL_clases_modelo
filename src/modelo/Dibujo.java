@@ -103,38 +103,37 @@ public class Dibujo {
 
     // Métodos para clavesColores
 
-    public boolean insertarColor(String color)
+    public void insertarColor(String color) throws MissingKeyOrValueException
     {
         if (clavesColores.containsValue(color))
         {
-            return false;
+            throw new MissingKeyOrValueException("El color debe ser unico en la seleccion");
+        } else if(color.equals("#0000"))
+        {
+            throw new MissingKeyOrValueException("El color blanco no puede ser añadidio a la seleccion");
         }
 
         int claveAux = clavesColores.size() + 1;
-
         clavesColores.put(claveAux, color);
-        return true;
     }
 
-    public boolean eliminarColor(String color)
+    public void eliminarColor(String color) throws MissingKeyOrValueException
     {
        Integer claveColor = null;
 
-        for (Map.Entry<Integer,String> entry : clavesColores.entrySet())
-        {
-            if (entry.getValue().equalsIgnoreCase(color))
-            {
-                claveColor = entry.getKey();
-                break;
-            }
-        }
+       for (Map.Entry<Integer, String> entry : clavesColores.entrySet()) {
+           if (entry.getValue().equalsIgnoreCase(color)) {
+               claveColor = entry.getKey();
+               break;
+           }
+       }
 
-        if (claveColor != null)
-        {
-            clavesColores.remove(claveColor);
-            return true;
-        }
-        return false;
+       if (claveColor == null)
+       {
+           throw new MissingKeyOrValueException("El color ingresado no se encuentra en la seleccion");
+       }
+
+       clavesColores.remove(claveColor);
     }
 
     public boolean estaColorEnMap(String color)
@@ -170,21 +169,25 @@ public class Dibujo {
         return "#0000"; // Cuando no se encuantra color en una cuadrícula, el color por defecto siempre será blanco
     }
 
-    public boolean cambiarColorCuadricula(int indiceX, int indiceY, String color)
+    public void cambiarColorCuadricula(int indiceX, int indiceY, String color) throws MissingSearchException
     {
+        boolean value = false;
+
         for (Cuadricula c : cuadriculas) {
             if (c.getIndiceX() == indiceX && c.getIndiceY() == indiceY)
             {
                 c.setColor(color);
-                return true;
+                value = true;
             }
         }
-        return false;
+
+        if(!value) throw new MissingSearchException("La posicion indicada no existe en el dibujo");
     }
 
-    public boolean eliminarCuadricula(int indiceX, int indiceY)
+    public void eliminarCuadricula(int indiceX, int indiceY) throws MissingSearchException
     {
         Iterator<Cuadricula> iterator = cuadriculas.iterator();
+        boolean value = false;
 
         while (iterator.hasNext())
         {
@@ -193,10 +196,11 @@ public class Dibujo {
             if (c.getIndiceX() == indiceX && c.getIndiceY() == indiceY)
             {
                 iterator.remove();
-                return true;
+                value = true;
             }
         }
-        return false;
+
+        if(!value) throw new MissingSearchException("La posicion indicada no existe en el dibujo");
     }
 
 
