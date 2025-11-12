@@ -10,8 +10,7 @@ public abstract class  Usuario {
 
     private int idUsuario;
     private String nombre;
-    private String hashContrasena;
-    private String salt;
+    private ContraseniaHash hashContrasena;
     private boolean activo;
     private RolUsuarios rolUsuarios;
 
@@ -22,17 +21,15 @@ public abstract class  Usuario {
     public Usuario() {
         this.idUsuario = 0;
         this.nombre = "";
-        this.hashContrasena = "";
-        this.salt = "";
+        this.hashContrasena = new ContraseniaHash();
         this.activo = false;
         this.rolUsuarios = RolUsuarios.NORMAL;
     }
 
-    public Usuario(int idUsuario, String nombre, String hashContrasena, String salt, boolean activo, RolUsuarios rolUsuarios) {
+    public Usuario(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
-        this.hashContrasena = hashContrasena;
-        this.salt = salt;
+        this.hashContrasena = new ContraseniaHash(hash, salt);
         this.activo = activo;
         this.rolUsuarios = rolUsuarios;
     }
@@ -53,12 +50,8 @@ public abstract class  Usuario {
         this.nombre = nombre;
     }
 
-    public String getHashContrasena() {
+    public ContraseniaHash getHashContrasena() {
         return hashContrasena;
-    }
-
-    public String getSalt() {
-        return salt;
     }
 
     public boolean isActivo() {
@@ -85,12 +78,12 @@ public abstract class  Usuario {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Usuario usuario)) return false;
-        return idUsuario == usuario.idUsuario && activo == usuario.activo && Objects.equals(nombre, usuario.nombre) && Objects.equals(hashContrasena, usuario.hashContrasena) && Objects.equals(salt, usuario.salt) && rolUsuarios == usuario.rolUsuarios;
+        return idUsuario == usuario.idUsuario && activo == usuario.activo && Objects.equals(nombre, usuario.nombre) && Objects.equals(hashContrasena, usuario.hashContrasena) && rolUsuarios == usuario.rolUsuarios;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsuario, nombre, hashContrasena, salt, activo, rolUsuarios);
+        return Objects.hash(idUsuario, nombre, hashContrasena, activo, rolUsuarios);
     }
 
     @Override
@@ -99,7 +92,6 @@ public abstract class  Usuario {
                 "idUsuario=" + idUsuario +
                 ", nombre='" + nombre + '\'' +
                 ", hashContrasena='" + hashContrasena + '\'' +
-                ", salt='" + salt + '\'' +
                 ", activo=" + activo +
                 ", rolUsuarios=" + rolUsuarios +
                 '}';

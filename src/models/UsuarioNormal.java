@@ -37,15 +37,15 @@ public class UsuarioNormal extends Usuario {
         this.dibujosPintados = dibujosPintados;
     }
 
-    public UsuarioNormal(int idUsuario, String nombre, String hashContrasena, String salt, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear) {
-        super(idUsuario, nombre, hashContrasena, salt, activo, rolUsuarios);
+    public UsuarioNormal(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear) {
+        super(idUsuario, nombre, salt, hash, activo, rolUsuarios);
         this.puedeCrear = puedeCrear;
         this.dibujosCreados = new HashSet<>();
         this.dibujosPintados = new HashSet<>();
     }
 
-    public UsuarioNormal(int idUsuario, String nombre, String hashContrasena, String salt, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear, HashSet<Integer> dibujosCreados, HashSet<Integer> dibujosPintados) {
-        super(idUsuario, nombre, hashContrasena, salt, activo, rolUsuarios);
+    public UsuarioNormal(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear, HashSet<Integer> dibujosCreados, HashSet<Integer> dibujosPintados) {
+        super(idUsuario, nombre, salt, hash, activo, rolUsuarios);
         this.puedeCrear = puedeCrear;
         this.dibujosCreados = dibujosCreados;
         this.dibujosPintados = dibujosPintados;

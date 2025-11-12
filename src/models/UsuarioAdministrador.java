@@ -36,21 +36,15 @@ public class UsuarioAdministrador extends Usuario {
     public UsuarioAdministrador(PermisosAdmin nivelAdmin, TreeMap<LocalDateTime, String> registroAcciones) {
         super();
         this.nivelAdmin = nivelAdmin;
-        this.registroAcciones = registroAcciones;   // Acá simplemente se te pasó asignarle el parámetro registroAcciones al atributo de la clase
+        this.registroAcciones = registroAcciones;
     }
 
-    public UsuarioAdministrador(int idUsuario, String nombre, String hashContrasena, String salt, boolean activo, RolUsuarios rolUsuarios, PermisosAdmin nivelAdmin) // este lo hago por si tambien se necesitaba
+    public UsuarioAdministrador(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios, PermisosAdmin nivelAdmin)
     {
-        super(idUsuario, nombre, hashContrasena, salt, activo, rolUsuarios);
+        super(idUsuario, nombre, salt, hash, activo, rolUsuarios);
         this.nivelAdmin = nivelAdmin;
         this.registroAcciones = new TreeMap<>();
     }
-
-    /*
-    * He añadido los métodos super() para que quede claro que
-    * se dirigen al constructor vacío de la clase padre Usuario.
-    * Tus desiciones de diseño me resultaron muy asertadas, bien ahí.
-    * */
 
 
 
@@ -101,7 +95,7 @@ public class UsuarioAdministrador extends Usuario {
         {
             LocalDateTime fechaHora = entrada.getKey();
 
-            if (fechaHora.equals(fechaIngresada)) { // Los atributos de LocalDateTime son variados e importantes, por eso hay que incluirlos a todos en la comprobacion (error mio desde el UML)
+            if (fechaHora.equals(fechaIngresada)) {
                 accionEncontrada.add(entrada.getValue());
             }
         }
