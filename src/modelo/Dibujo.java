@@ -110,7 +110,7 @@ public class Dibujo {
 
     public boolean eliminarColor(String color)
     {
-       Integer claveColor = null;
+        Integer claveColor = null;
 
         for (Map.Entry<Integer,String> entry : clavesColores.entrySet())
         {
@@ -142,7 +142,7 @@ public class Dibujo {
 
 
 
-/// metodos de la cuadricula
+    /// metodos de la cuadricula
 
 
     public boolean buscarCuadricula(int indiceX, int indiceY)
@@ -222,8 +222,16 @@ public class Dibujo {
         return Objects.hash(idDibujo);
     }
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "Dibujo{" +
+                "idDibujo=" + idDibujo +
+                ", idPropietario=" + idPropietario +
+                ", nombreDibujo='" + nombreDibujo + '\'' +
+                ", activo=" + activo +
+                ", anchoCuadricula=" + anchoCuadricula +
+                ", clavesColores=" + clavesColores +
+                ", cuadriculas=" + cuadriculas +
+                '}';
+    }
 }
