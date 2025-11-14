@@ -42,6 +42,10 @@ public abstract class  Usuario {
         return idUsuario;
     }
 
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -52,6 +56,10 @@ public abstract class  Usuario {
 
     public ContraseniaHash getHashContrasena() {
         return hashContrasena;
+    }
+
+    public void setHashContrasena(ContraseniaHash hashContrasena) {
+        this.hashContrasena = hashContrasena;
     }
 
     public boolean isActivo() {

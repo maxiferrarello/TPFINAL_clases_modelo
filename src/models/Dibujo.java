@@ -187,6 +187,10 @@ public class Dibujo {
         return "#FFFFFF";
     }
 
+    public boolean ingresarCuadricula(Cuadricula cuadricula){
+        return cuadriculas.add(cuadricula);
+    }
+
     public void cambiarColorCuadricula(int indiceX, int indiceY, String color) throws MissingSearchException
     {
         boolean value = false;

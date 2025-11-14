@@ -1,0 +1,94 @@
+package JSONManagement.Mappers;
+
+import enumerators.RolUsuarios;
+import models.UsuarioAdministrador;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TreeMap;
+
+public class UsuarioAdministradorMapper extends AbstractMapper<UsuarioAdministrador>{
+    @Override
+    public JSONObject objectToJSONObject(UsuarioAdministrador usuarioAdministrador) {
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = new JSONObject();
+            ContraseniaHashMapper contraseniaHashMapper = new ContraseniaHashMapper();
+
+            jsonObject.put("idUsuario", usuarioAdministrador.getIdUsuario());
+            jsonObject.put("nombre", usuarioAdministrador.getNombre());
+            jsonObject.put("contraseniaHash",
+                    contraseniaHashMapper.objectToJSONObject(usuarioAdministrador.getHashContrasena()));
+            jsonObject.put("activo", usuarioAdministrador.isActivo());
+            jsonObject.put("RolUsuarios", usuarioAdministrador.getRolUsuarios());
+
+            jsonObject.put("PermisosAdmin", usuarioAdministrador.getNivelAdmin());
+            jsonObject.put("registroAcciones",
+                    CollectionsMapper.mapToJSONObject(usuarioAdministrador.getRegistroAcciones()));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
+
+    @Override
+    public UsuarioAdministrador jsonObjectToObject(JSONObject jsonObject) {
+        UsuarioAdministrador usuarioAdministrador = new UsuarioAdministrador();
+
+        try {
+            ContraseniaHashMapper contraseniaHashMapper = new ContraseniaHashMapper();
+
+            usuarioAdministrador.setIdUsuario(jsonObject.getInt("idUsuario"));
+            usuarioAdministrador.setNombre(jsonObject.getString("nombre"));
+            usuarioAdministrador.setHashContrasena(contraseniaHashMapper.jsonObjectToObject(
+                    jsonObject.getJSONObject("contraseniaHash")));
+            usuarioAdministrador.setActivo(jsonObject.getBoolean("activo"));
+            usuarioAdministrador.setRolUsuarios((RolUsuarios) jsonObject.get("RolUsuario"));
+
+            usuarioAdministrador.setRolUsuarios((RolUsuarios) jsonObject.get("RolUsuarios"));
+            usuarioAdministrador.setRegistroAcciones((TreeMap<LocalDateTime, String>) CollectionsMapper.jsonObjectToMap(
+                            jsonObject.getJSONObject("registroAcciones"), LocalDateTime.class, String.class));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return usuarioAdministrador;
+    }
+
+    @Override
+    public JSONArray listToJSONArray(List<UsuarioAdministrador> usuarioAdministradores) {
+        JSONArray jsonArray = null;
+
+        try {
+            jsonArray = new JSONArray();
+            for(UsuarioAdministrador usuarioAdministrador : usuarioAdministradores){
+                jsonArray.put(objectToJSONObject(usuarioAdministrador));
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return jsonArray;
+    }
+
+    @Override
+    public List<UsuarioAdministrador> jsonArrayToList(JSONArray jsonArray) {
+        List<UsuarioAdministrador> usuarioAdministradores = new ArrayList<>();
+
+        try {
+            for(int i=0; i<jsonArray.length(); i++){
+                usuarioAdministradores.add(jsonObjectToObject(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return usuarioAdministradores;
+    }
+}
