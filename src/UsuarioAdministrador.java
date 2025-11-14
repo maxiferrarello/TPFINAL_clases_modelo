@@ -1,5 +1,5 @@
-package modelo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,19 +7,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class UsuarioAdministrador extends Usuario {
-
-
     /// atributos
-
     private PermisosAdmin nivelAdmin;
-
     private TreeMap<LocalDateTime,String> registroAcciones;
 
-
-
-    /// Constructor
-
-
+    /// Constructores
     public UsuarioAdministrador() {
         this.registroAcciones = new TreeMap<>();
     }
@@ -31,12 +23,12 @@ public class UsuarioAdministrador extends Usuario {
 
     public UsuarioAdministrador(PermisosAdmin nivelAdmin, TreeMap<LocalDateTime, String> registroAcciones) {
         this.nivelAdmin = nivelAdmin;
-        this.registroAcciones = new TreeMap<>();
+        this.registroAcciones = registroAcciones;
     }
 
-    public UsuarioAdministrador(int idUsuario, String nombre, String hashContrasena, String salt, boolean activo, RolUsuarios rolUsuarios, PermisosAdmin nivelAdmin) // este lo hago por si tambien se necesitaba
+    public UsuarioAdministrador(String nombre, String hashContrasena, String salt, boolean activo, PermisosAdmin nivelAdmin) // este lo hago por si tambien se necesitaba
     {
-        super(idUsuario, nombre, hashContrasena, salt, activo, rolUsuarios);
+        super(nombre, hashContrasena, salt, activo, RolUsuarios.ADMIN);
         this.nivelAdmin = nivelAdmin;
         this.registroAcciones = new TreeMap<>();
     }
@@ -66,22 +58,42 @@ public class UsuarioAdministrador extends Usuario {
 
     public boolean ingresarAccionAlRegistro(String accion) {
 
-        LocalDateTime fechahora = LocalDateTime.now();
+        // fecha y la hora sin los nanos
 
-        if (!registroAcciones.containsKey(fechahora))
-        {
-            registroAcciones.put(fechahora, accion);
+        LocalDateTime fechaHora = LocalDateTime.now().withNano(0);
 
+
+        while (registroAcciones.containsKey(fechaHora)) { // si existe la misma hora y fehca en el treemap, (poco probable dependiendo el caso pero buenpo), se le agrega 1 seg
+            fechaHora = fechaHora.plusSeconds(1);
+        }
+
+        registroAcciones.put(fechaHora, accion);
+
+        return true;
+    }
+
+    public boolean eliminarAccionDelRegistro(LocalDateTime fechaHora, String accion) {
+
+        LocalDateTime claveAborrar = null;
+
+        for (Map.Entry<LocalDateTime, String> entry : registroAcciones.entrySet()) {
+
+            LocalDateTime fecha = entry.getKey();
+
+            if (fecha.toLocalDate().equals(fechaHora.toLocalDate())
+                    && entry.getValue().equals(accion)) {
+
+                claveAborrar = fecha;
+                break;
+            }
+        }
+
+        if (claveAborrar != null) {
+            registroAcciones.remove(claveAborrar);
             return true;
         }
 
-        return false; // si la clave de la accion es igual no la ingresa y devuelve false (no se si necesitaran comprobar eso pero por las dudas lo hago asi)
-    }
-
-
-    public boolean eliminarAccionDelRegistro(LocalDateTime fechaHora, String accion)
-    {
-       return registroAcciones.remove(fechaHora,accion);
+        return false;
     }
 
 
@@ -105,18 +117,11 @@ public class UsuarioAdministrador extends Usuario {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    public String toString() {
+        return "UsuarioAdministrador{" +
+                "nivelAdmin=" + nivelAdmin +
+                ", registroAcciones=" + registroAcciones +
+                "} " + super.toString();
+    }
 }

@@ -1,5 +1,3 @@
-package modelo;
-
 public enum PermisosAdmin {
 
     SUPERADMIN,

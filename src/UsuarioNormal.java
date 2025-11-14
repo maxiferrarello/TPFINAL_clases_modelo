@@ -1,19 +1,12 @@
-package modelo;
-
 import java.util.HashSet;
 
 public class UsuarioNormal extends Usuario {
 
 
     /// atributos
-
     private boolean puedeCrear;
-
     private HashSet<Integer> dibujosCreados;
-
     private HashSet<Integer> dibujosPintados;
-
-
 
     /// Constructor
 
@@ -24,23 +17,18 @@ public class UsuarioNormal extends Usuario {
     }
 
     public UsuarioNormal(boolean puedeCrear) {
-
         this.puedeCrear = puedeCrear;
         this.dibujosCreados = new HashSet<>();
         this.dibujosPintados = new HashSet<>();
     }
 
 
-    public UsuarioNormal(int idUsuario, String nombre, String hashContrasena, String salt, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear) {
-        super(idUsuario, nombre, hashContrasena, salt, activo, rolUsuarios);
+    public UsuarioNormal(String nombre, String hashContrasena, String salt, boolean activo, boolean puedeCrear) {
+        super(nombre, hashContrasena, salt, activo, RolUsuarios.NORMAL);
         this.puedeCrear = puedeCrear;
         this.dibujosCreados = new HashSet<>();
         this.dibujosPintados = new HashSet<>();
     }
-
-
-
-
 
 
     ///  getter y setters
@@ -132,8 +120,12 @@ public class UsuarioNormal extends Usuario {
         }
     }
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "UsuarioNormal{" +
+                "puedeCrear=" + puedeCrear +
+                ", dibujosCreados=" + dibujosCreados +
+                ", dibujosPintados=" + dibujosPintados +
+                "} " + super.toString();
+    }
 }

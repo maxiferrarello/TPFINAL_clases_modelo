@@ -1,4 +1,3 @@
-package modelo;
 
 import java.util.Objects;
 
@@ -16,7 +15,6 @@ public class Cuadricula implements Comparable<Cuadricula> {
     /// constructores
     public Cuadricula() {
     }
-
 
     public Cuadricula(int indiceX, int indiceY, String color) {
         this.indiceX = indiceX;

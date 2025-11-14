@@ -1,11 +1,10 @@
-package modelo;
-
 import java.util.*;
 
 public class Dibujo {
 
 
     ///  atributos
+    private static int contadorID=0;
     private int idDibujo;
     private int idPropietario;
     private String nombreDibujo;
@@ -20,8 +19,9 @@ public class Dibujo {
     public Dibujo() {
     }
 
-    public Dibujo(int idDibujo, int idPropietario, String nombreDibujo, boolean activo, int anchoCuadricula) {
-        this.idDibujo = idDibujo;
+    public Dibujo(int idPropietario, String nombreDibujo, boolean activo, int anchoCuadricula) {
+        this.contadorID++;
+        this.idDibujo = contadorID;
         this.idPropietario = idPropietario;
         this.nombreDibujo = nombreDibujo;
         this.activo = activo;
@@ -108,7 +108,7 @@ public class Dibujo {
 
     public boolean eliminarColor(String color)
     {
-       Integer claveColor = null;
+        Integer claveColor = null;
 
         for (Map.Entry<Integer,String> entry : clavesColores.entrySet())
         {
@@ -140,7 +140,7 @@ public class Dibujo {
 
 
 
-/// metodos de la cuadricula
+    /// metodos de la cuadricula
 
 
     public boolean buscarCuadricula(int indiceX, int indiceY)
@@ -220,8 +220,16 @@ public class Dibujo {
         return Objects.hash(idDibujo);
     }
 
-
-
-
-
+    @Override
+    public String toString() {
+        return "Dibujo{" +
+                "idDibujo=" + idDibujo +
+                ", idPropietario=" + idPropietario +
+                ", nombreDibujo='" + nombreDibujo + '\'' +
+                ", activo=" + activo +
+                ", anchoCuadricula=" + anchoCuadricula +
+                ", clavesColores=" + clavesColores +
+                ", cuadriculas=" + cuadriculas +
+                '}';
+    }
 }
