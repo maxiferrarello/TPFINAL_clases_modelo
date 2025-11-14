@@ -20,7 +20,7 @@ public class GestorArchivoUsuario {
 
     private final UsuarioAdministradorDAO usuarioAdministradorDAO = new UsuarioAdministradorDAO();
     private final UsuarioNormalDAO usuarioNormalDAO = new UsuarioNormalDAO();
-    private ArrayList<UsuarioAdministrador> administradores;
+    private ArrayList<UsuarioAdministrador> administradores = new ArrayList<>();
     private ArrayList<UsuarioNormal> normales = new ArrayList<>();
     private HashSet<Usuario> usuariosTotales = new HashSet<>();
 
@@ -29,7 +29,7 @@ public class GestorArchivoUsuario {
             actualizarListaAdmins();
         }
 
-        if(ReadWriteOperations.archivoExiste(NAME_FILE_ADMINS)){
+        if(ReadWriteOperations.archivoExiste(NAME_FILE_USERS)){
             actualizarListaUsuariosNormales();
         }
     }
@@ -310,8 +310,11 @@ public class GestorArchivoUsuario {
     }
 
     private void guardarCambios(){
-        if(administradores != null && !administradores.isEmpty()) usuarioAdministradorDAO.listToFile(administradores, NAME_FILE_ADMINS);
-        if(normales != null && !normales.isEmpty()) usuarioNormalDAO.listToFile(normales, NAME_FILE_USERS);
+        if(administradores == null) this.administradores = new ArrayList<>();
+        if(normales == null) this.normales = new ArrayList<>();
+
+        usuarioAdministradorDAO.listToFile(administradores, NAME_FILE_ADMINS);
+        usuarioNormalDAO.listToFile(normales, NAME_FILE_USERS);
     }
 
     private void actualizarListas(){
