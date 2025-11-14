@@ -30,7 +30,7 @@ public class GestorContrasenia {
         return new ContraseniaHash(hashStr, saltStr);
     }
 
-    public boolean verificarContraseniaIngresada(String contraseniaIngresada, String saltAlmacenada, String hashAlmacenado){
+    public static boolean verificarContraseniaIngresada(String contraseniaIngresada, String saltAlmacenada, String hashAlmacenado){
         try {
             byte[] saltBytes = Base64.getDecoder().decode(saltAlmacenada);
             byte[] hashContrasniaBytes = hashearContrasenia(contraseniaIngresada, saltBytes);

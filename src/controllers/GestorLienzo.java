@@ -17,6 +17,7 @@ public class GestorLienzo {
             "#FFFFFF", "#000000", "#FF0000", "#00FF00", "#0000FF",
             "#FFFF00", "#FF00FF", "#00FFFF", "#FFA500", "#800080"
     };
+    private static final GestorArchivoDibujo gestorArchivoDibujo = new GestorArchivoDibujo();
 
 
 
@@ -24,6 +25,7 @@ public class GestorLienzo {
 
     private int tamanioActual;
     private String colorSeleccionado;
+    private boolean paraPintar;
     private Dibujo dibujo;
 
 
@@ -34,6 +36,12 @@ public class GestorLienzo {
         this.tamanioActual = 32;
         this.colorSeleccionado = "#000000";
         this.dibujo = new Dibujo();
+    }
+
+    public GestorLienzo(Dibujo dibujo) {
+        this.tamanioActual = 32;
+        this.colorSeleccionado = "#000000";
+        this.dibujo = dibujo != null ? dibujo : new Dibujo();
     }
 
     public GestorLienzo(int tamanioActual, String colorSeleccionado, Dibujo dibujo) {
@@ -64,6 +72,14 @@ public class GestorLienzo {
         if (validarColorIngresado(hxdColor)) {
             this.colorSeleccionado = hxdColor.toUpperCase();
         }
+    }
+
+    public boolean isParaPintar() {
+        return paraPintar;
+    }
+
+    public void setParaPintar(boolean paraPintar) {
+        this.paraPintar = paraPintar;
     }
 
     public Dibujo getDibujo() {
@@ -101,7 +117,14 @@ public class GestorLienzo {
         return false;
     }
 
-    // Método principal de dibujo
+
+
+    // Metodos de dibujo
+
+    public void abrirDibujoCreado(int idDibujo){
+        dibujo = gestorArchivoDibujo.buscarDibujoEnLista(idDibujo);
+    }
+
     public void dibujarPixel(int ejeX, int ejeY) {
         if (dibujo == null) {
             dibujo = new Dibujo();
@@ -122,6 +145,8 @@ public class GestorLienzo {
         } catch (MissingSearchException e) {
             e.printStackTrace();
         }
+
+        guardarDatos();
     }
 
     public void borrarPixel(int ejeX, int ejeY) {
@@ -131,6 +156,8 @@ public class GestorLienzo {
             } catch (MissingSearchException e) {
                 e.printStackTrace();
             }
+
+            guardarDatos();
         }
     }
 
@@ -149,5 +176,9 @@ public class GestorLienzo {
 
     public void nuevoDibujo(String nombreDibujo, int anchoCuadricula) {
         this.dibujo = new Dibujo(0, 0, nombreDibujo, true, anchoCuadricula);
+    }
+
+    private void guardarDatos(){
+        gestorArchivoDibujo.modificarDibujo(dibujo);
     }
 }

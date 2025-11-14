@@ -128,9 +128,7 @@ public class Dibujo {
         if(!validarEntradaColor(color)) {
             throw new MissingKeyOrValueException("El color ingresado es invalido");
         } else if (estaColorEnMap(color)) {
-            throw new MissingKeyOrValueException("El color debe ser unico en la seleccion");
-        } else if(color.equals("#FFFFFF")) {
-            throw new MissingKeyOrValueException("El color blanco no puede ser añadidio a la seleccion");
+            throw new MissingKeyOrValueException("El color ya se encuentra en la seleccion");
         }
 
         int claveAux = clavesColores.isEmpty() ? 0 : clavesColores.lastKey() + 1;

@@ -70,21 +70,40 @@ public class UsuarioAdministrador extends Usuario {
 
     /// metodos para el registro de las acciones
 
-    public void ingresarAccionAlRegistro(String accion) throws MissingKeyOrValueException
+    public void ingresarAccionAlRegistro(String accion) // Correcciones de Maxi
     {
-        LocalDateTime fechaHora = LocalDateTime.now();
+        LocalDateTime fechaHora = LocalDateTime.now().withNano(0);
 
         if (registroAcciones.containsKey(fechaHora))
         {
-          throw new MissingKeyOrValueException("La fecha ingresada ya esta registrada");
+            fechaHora = fechaHora.plusSeconds(1);
         }
 
         registroAcciones.put(fechaHora, accion);
     }
 
-    public boolean eliminarAccionDelRegistro(LocalDateTime fechaHora, String accion)
+    public boolean eliminarAccionDelRegistro(LocalDateTime fechaHora, String accion) // Correcciones de Maxi
     {
-       return registroAcciones.remove(fechaHora,accion);
+        LocalDateTime claveAborrar = null;
+
+        for (Map.Entry<LocalDateTime, String> entry : registroAcciones.entrySet()) {
+
+            LocalDateTime fecha = entry.getKey();
+
+            if (fecha.toLocalDate().equals(fechaHora.toLocalDate())
+                    && entry.getValue().equals(accion)) {
+
+                claveAborrar = fecha;
+                break;
+            }
+        }
+
+        if (claveAborrar != null) {
+            registroAcciones.remove(claveAborrar);
+            return true;
+        }
+
+        return false;
     }
 
     public List<String> buscarAcciones(LocalDateTime fechaIngresada)
