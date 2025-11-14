@@ -60,13 +60,12 @@ public class Cuadricula implements Comparable<Cuadricula> {
     public boolean equals(Object o) {
         if (!(o instanceof Cuadricula that)) return false;
         return indiceX == that.indiceX && indiceY == that.indiceY;
-        // Eliminé el color dentro de la condición ya que necesitamos gestionar POSICIONES iguales, sin importar el color.
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(indiceX, indiceY);
-    } // Mantener el color impone diferencia entre la igualdad de objetos con la igualdad de sus códigos hash.
+    }
 
     @Override
     public int compareTo(Cuadricula cuadricula)

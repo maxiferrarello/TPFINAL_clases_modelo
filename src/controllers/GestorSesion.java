@@ -7,8 +7,8 @@ import models.Usuario;
 public class GestorSesion {
     private static final GestorArchivoUsuario gestorArchivoUsuario = new GestorArchivoUsuario();
 
-    public boolean inicioSecion(String nombreUsuario, String contraseniaIngresada){
-        Usuario usuario = gestorArchivoUsuario.buscarUsuario(nombreUsuario);
+    public boolean inicioSesion(String nombreUsuario, String contraseniaIngresada, RolUsuarios rolUsuarios){
+        Usuario usuario = gestorArchivoUsuario.buscarUsuario(nombreUsuario, rolUsuarios);
 
         if(usuario == null) return false;
 
@@ -18,14 +18,14 @@ public class GestorSesion {
                 usuario.getHashContrasena().getHash());
     }
 
-    public boolean registroSecionUsuarioAdmin(String nombre, String contrasenia, boolean activo){
+    public boolean registroSesionUsuarioAdmin(String nombre, String contrasenia, boolean activo){
         if(validarContrasenia(contrasenia) && gestorArchivoUsuario.nombreUsuarioUnico(nombre)){
             return gestorArchivoUsuario.crearUsuarioAdmin(nombre, contrasenia, activo, RolUsuarios.NORMAL, PermisosAdmin.VISUALIZANTE);
         }
         return false;
     }
 
-    public boolean registroSecionUsuarioNormal(String nombre, String contrasenia, boolean activo){
+    public boolean registroSesionUsuarioNormal(String nombre, String contrasenia, boolean activo){
         if(validarContrasenia(contrasenia) && gestorArchivoUsuario.nombreUsuarioUnico(nombre)){
             return gestorArchivoUsuario.crearUsuarioNormal(nombre, contrasenia, activo, RolUsuarios.NORMAL, false);
         }

@@ -1,5 +1,6 @@
 package JSONManagement.Mappers;
 
+import enumerators.PermisosAdmin;
 import enumerators.RolUsuarios;
 import models.UsuarioAdministrador;
 import org.json.JSONArray;
@@ -51,7 +52,7 @@ public class UsuarioAdministradorMapper extends AbstractMapper<UsuarioAdministra
             usuarioAdministrador.setActivo(jsonObject.getBoolean("activo"));
             usuarioAdministrador.setRolUsuarios((RolUsuarios) jsonObject.get("RolUsuario"));
 
-            usuarioAdministrador.setRolUsuarios((RolUsuarios) jsonObject.get("RolUsuarios"));
+            usuarioAdministrador.setNivelAdmin((PermisosAdmin) jsonObject.get("PermisosAdmin"));
             usuarioAdministrador.setRegistroAcciones((TreeMap<LocalDateTime, String>) CollectionsMapper.jsonObjectToMap(
                             jsonObject.getJSONObject("registroAcciones"), LocalDateTime.class, String.class));
         } catch (JSONException e){

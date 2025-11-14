@@ -4,6 +4,7 @@
 
 package controllers;
 
+import models.Cuadricula;
 import models.Dibujo;
 import exceptions.MissingKeyOrValueException;
 import exceptions.MissingSearchException;
@@ -143,10 +144,9 @@ public class GestorLienzo {
         }
 
         try {
-            // Cambiar el color de la cuadrícula
             dibujo.cambiarColorCuadricula(ejeX, ejeY, colorSeleccionado);
         } catch (MissingSearchException e) {
-            e.printStackTrace();
+            dibujo.ingresarCuadricula(new Cuadricula(ejeX, ejeY, colorSeleccionado));
         }
 
         guardarDatos();

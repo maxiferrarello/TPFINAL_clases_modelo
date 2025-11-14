@@ -16,8 +16,12 @@ public class GestorArchivoDibujo {
     }
 
     public void crearDibujo(int idPropietario, String nombreDibujo, boolean activo, int anchoCuadricula){
-        dibusjosGuardados.add(new Dibujo(generarIdUnico(), idPropietario, nombreDibujo, activo, anchoCuadricula));
+        int idGenerado = generarIdUnico();
+
+        dibusjosGuardados.add(new Dibujo(idGenerado, idPropietario, nombreDibujo, activo, anchoCuadricula));
+
         guardarCambios();
+        new GestorArchivoUsuario().agregarDibujoCreado(idPropietario, idPropietario);
     }
 
     public void modificarDibujo(Dibujo dibujoModificado){
