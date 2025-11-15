@@ -26,7 +26,7 @@ public class GestorSesion {
     }
 
     public boolean registroSesionUsuarioNormal(String nombre, String contrasenia, boolean activo){
-        if(validarContrasenia(contrasenia) && gestorArchivoUsuario.nombreUsuarioUnico(nombre)){
+        if(validarContrasenia(contrasenia)){
             return gestorArchivoUsuario.crearUsuarioNormal(nombre, contrasenia, activo, RolUsuarios.NORMAL, false);
         }
         return false;

@@ -35,7 +35,7 @@ public class GestorArchivoUsuario {
     }
 
     public boolean crearUsuarioNormal(String nombre, String contrasenia, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear){
-        if(rolUsuarios.equals(RolUsuarios.NORMAL)){
+        if(nombreUsuarioUnico(nombre) && rolUsuarios.equals(RolUsuarios.NORMAL)){
             ContraseniaHash contraseniaHash = GestorContrasenia.generarHashContrasenia(contrasenia);
             normales.add(new UsuarioNormal(
                     generarIdUsuario(),
