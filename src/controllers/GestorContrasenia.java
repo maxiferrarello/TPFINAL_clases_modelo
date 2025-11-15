@@ -1,5 +1,6 @@
 package controllers;
 
+import models.exceptions.InvalidOrMissingHashPasswordException;
 import models.ContraseniaHash;
 
 import java.nio.charset.StandardCharsets;
@@ -27,7 +28,11 @@ public class GestorContrasenia {
         String saltStr = Base64.getEncoder().encodeToString(saltBytes);
         String hashStr = Base64.getEncoder().encodeToString(hashBytes);
 
-        return new ContraseniaHash(hashStr, saltStr);
+        try {
+            return new ContraseniaHash(hashStr, saltStr);
+        } catch (InvalidOrMissingHashPasswordException e) {
+            throw new RuntimeException("Error al retornar la contrasenia generada");
+        }
     }
 
     public static boolean verificarContraseniaIngresada(String contraseniaIngresada, String saltAlmacenada, String hashAlmacenado){

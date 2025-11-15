@@ -1,7 +1,7 @@
 package models;
 
-import exceptions.MissingKeyOrValueException;
-import exceptions.MissingSearchException;
+import models.exceptions.MissingKeyOrValueException;
+import models.exceptions.MissingSearchException;
 
 import java.util.*;
 
@@ -50,7 +50,6 @@ public class Dibujo {
         this.anchoCuadricula = anchoCuadricula;
         this.clavesColores = clavesColores;
         this.cuadriculas = cuadriculas;
-        inicializarColoresPorDefecto();
     }
 
     private void inicializarColoresPorDefecto() {       // Fragmento de código del proyecto de David
@@ -102,16 +101,16 @@ public class Dibujo {
         this.anchoCuadricula = anchoCuadricula;
     }
 
-    public TreeMap<Integer, String> getClavesColores() {
-        return clavesColores;
+    public Map<Integer, String> getClavesColores() {
+        return Collections.unmodifiableMap(clavesColores);
     }
 
     public void setClavesColores(TreeMap<Integer, String> clavesColores) {
         this.clavesColores = clavesColores;
     }
 
-    public HashSet<Cuadricula> getCuadriculas() {
-        return cuadriculas;
+    public Set<Cuadricula> getCuadriculas() {
+        return Collections.unmodifiableSet(cuadriculas);
     }
 
     public void setCuadriculas(HashSet<Cuadricula> cuadriculas) {
@@ -163,26 +162,24 @@ public class Dibujo {
 
     public boolean buscarCuadricula(int indiceX, int indiceY)
     {
-        for (Cuadricula c : cuadriculas)
-        {
-            if (c.getIndiceX() == indiceX && c.getIndiceY() == indiceY)
-            {
-                return true;
-            }
-        }
-        return false;
+        Cuadricula cuadricula = new Cuadricula(indiceX, indiceY);
+        return cuadriculas.contains(cuadricula);    // Al tener implementado hashCode e equals, es más eficiente hacer una copia que un bucle
     }
 
     public String colorCuadricula(int indiceX, int indiceY)
     {
-        for (Cuadricula c : cuadriculas)
-        {
-            if (c.getIndiceX() == indiceX && c.getIndiceY() == indiceY)
-            {
-                return c.getColor();
-            }
-        }
-        return "#FFFFFF";
+        Cuadricula cuadricula = new Cuadricula(indiceX, indiceY);
+
+        /* Metodo de filtrado Stream enriquecido por la imlementacion de equals y hashDode.
+           Al tratarse de un HashSet, no podemos obligar al codigo a tratar conuna búsqueda secuencial.
+           Como definimos equals y hashCode de Cuadricula basados en las coordenadas indiceX e indiceY,
+           podemos aplicar estas técnicas de filtrado.
+         */
+        Optional<Cuadricula> resultado = cuadriculas.stream()
+                .filter(c -> c.equals(cuadricula))
+                .findFirst();
+
+        return resultado.map(Cuadricula::getColor).orElse("#FFFFFF");
     }
 
     public boolean ingresarCuadricula(Cuadricula cuadricula){
@@ -191,18 +188,18 @@ public class Dibujo {
 
     public void cambiarColorCuadricula(int indiceX, int indiceY, String color) throws MissingSearchException
     {
-        boolean value = false;
+        if(!validarEntradaColor(color)) {
+            throw new MissingSearchException("El formato del color ingresado es invalido");
+        }
 
-        if(validarEntradaColor(color)) {
-            for (Cuadricula c : cuadriculas) {
-                if (c.getIndiceX() == indiceX && c.getIndiceY() == indiceY) {
-                    c.setColor(color);
-                    value = true;
-                }
+        for (Cuadricula c : cuadriculas) {
+            if (c.getIndiceX() == indiceX && c.getIndiceY() == indiceY) {
+                c.setColor(color);
+                return;
             }
         }
 
-        if(!value) throw new MissingSearchException("La posicion indicada no existe en el dibujo");
+        throw new MissingSearchException("La posicion indicada no existe en el dibujo");
     }
 
     public void eliminarCuadricula(int indiceX, int indiceY) throws MissingSearchException
@@ -222,13 +219,16 @@ public class Dibujo {
 
     // Validaciones
 
-    public boolean estaColorEnMap(String color)
-    {
-        return validarEntradaColor(color) && clavesColores.containsValue(color);
+    private boolean validarEntradaColor(String color){
+        return color != null && !color.isEmpty() && color.matches("^#[0-9A-Fa-f]{6}$");
     }
 
-    private boolean validarEntradaColor(String color){
-        return !(color == null || color.isEmpty() || !color.matches("^#[0-9A-Fa-f]{6}$"));
+    public boolean estaColorEnMap(String color)
+    {
+        if(!validarEntradaColor(color)) return false;
+
+        String colorEstand = color.toUpperCase();
+        return clavesColores.containsValue(colorEstand);
     }
 
 

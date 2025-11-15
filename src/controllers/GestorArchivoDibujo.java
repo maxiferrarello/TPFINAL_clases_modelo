@@ -1,7 +1,7 @@
 package controllers;
 
-import JSONManagement.DataAccessObjects.DibujoDAO;
-import JSONManagement.ReadWriteOperations;
+import models.JSONManagement.DataAccessObjects.DibujoDAO;
+import models.JSONManagement.ReadWriteOperations;
 import models.Dibujo;
 
 import java.util.ArrayList;

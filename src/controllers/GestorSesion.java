@@ -1,21 +1,26 @@
 package controllers;
 
-import enumerators.PermisosAdmin;
-import enumerators.RolUsuarios;
+import models.enumerators.PermisosAdmin;
+import models.enumerators.RolUsuarios;
+import models.exceptions.InvalidOrMissingHashPasswordException;
 import models.Usuario;
 
 public class GestorSesion {
     private static final GestorArchivoUsuario gestorArchivoUsuario = new GestorArchivoUsuario();
 
-    public boolean inicioSesion(String nombreUsuario, String contraseniaIngresada, RolUsuarios rolUsuarios){
+    public boolean inicioSesion(String nombreUsuario, String contraseniaIngresada, RolUsuarios rolUsuarios) throws InvalidOrMissingHashPasswordException {
         Usuario usuario = gestorArchivoUsuario.buscarUsuario(nombreUsuario, rolUsuarios);
 
         if(usuario == null) return false;
 
-        return GestorContrasenia.verificarContraseniaIngresada(
-                contraseniaIngresada,
-                usuario.getHashContrasena().getSalt(),
-                usuario.getHashContrasena().getHash());
+        try {
+            return GestorContrasenia.verificarContraseniaIngresada(
+                    contraseniaIngresada,
+                    usuario.getHashContrasena().getSalt(),
+                    usuario.getHashContrasena().getHash());
+        } catch (InvalidOrMissingHashPasswordException e){
+            throw new InvalidOrMissingHashPasswordException("Formato de la contrasenia invalido. El usuaio " + nombreUsuario + " no pudo iniciar sesion.");
+        }
     }
 
     public boolean registroSesionUsuarioAdmin(String nombre, String contrasenia, boolean activo){

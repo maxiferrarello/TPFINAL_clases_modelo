@@ -1,4 +1,4 @@
-package exceptions;
+package models.exceptions;
 
 public class MissingSearchException extends Exception {
     public MissingSearchException(String message){

@@ -1,5 +1,6 @@
-package JSONManagement.Mappers;
+package models.JSONManagement.Mappers;
 
+import models.exceptions.NullMapperValueException;
 import models.Cuadricula;
 import models.Dibujo;
 import org.json.JSONArray;
@@ -26,6 +27,10 @@ public class DibujoMapper extends AbstractMapper<Dibujo> {
             jsonObject.put("clavesColores", CollectionsMapper.mapToJSONObject(dibujo.getClavesColores()));
             jsonObject.put("cuadriculas", CollectionsMapper.setToJSONArray(dibujo.getCuadriculas()));
         } catch (JSONException e){
+            System.err.println("Error al serializar un dibujo:");
+            e.printStackTrace();
+        } catch (NullMapperValueException e){
+            System.err.println("Error al mapear las colecciones:");
             e.printStackTrace();
         }
 
@@ -47,6 +52,10 @@ public class DibujoMapper extends AbstractMapper<Dibujo> {
             dibujo.setCuadriculas((HashSet<Cuadricula>) CollectionsMapper.jsonArrayToSet(
                     jsonObject.getJSONArray("cuadriculas"), Cuadricula.class));
         } catch (JSONException e){
+            System.err.println("Error al deserializar un dibujo:");
+            e.printStackTrace();
+        } catch (NullMapperValueException e){
+            System.err.println("Error al mapear las colecciones:");
             e.printStackTrace();
         }
 
@@ -64,6 +73,7 @@ public class DibujoMapper extends AbstractMapper<Dibujo> {
                 jsonArray.put(objectToJSONObject(dibujo));
             }
         } catch (JSONException e) {
+            System.err.println("Error al serializar una lista de dibujos:");
             e.printStackTrace();
         }
 
@@ -79,6 +89,7 @@ public class DibujoMapper extends AbstractMapper<Dibujo> {
                 dibujos.add(jsonObjectToObject(jsonArray.getJSONObject(i)));
             }
         } catch (JSONException e){
+            System.err.println("Error al deserializar una lista de dibujos:");
             e.printStackTrace();
         }
 

@@ -1,8 +1,10 @@
 package models;
 
-import enumerators.RolUsuarios;
+import models.enumerators.RolUsuarios;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 public class UsuarioNormal extends Usuario {
 
@@ -33,8 +35,8 @@ public class UsuarioNormal extends Usuario {
     public UsuarioNormal(boolean puedeCrear, HashSet<Integer> dibujosCreados, HashSet<Integer> dibujosPintados) {
         super();
         this.puedeCrear = puedeCrear;
-        this.dibujosCreados = dibujosCreados;
-        this.dibujosPintados = dibujosPintados;
+        this.dibujosCreados = new HashSet<>(dibujosCreados);
+        this.dibujosPintados = new HashSet<>(dibujosPintados);
     }
 
     public UsuarioNormal(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear) {
@@ -44,11 +46,25 @@ public class UsuarioNormal extends Usuario {
         this.dibujosPintados = new HashSet<>();
     }
 
+    public UsuarioNormal(int idUsuario, String nombre, ContraseniaHash hashContrasenia, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear) {
+        super(idUsuario, nombre, hashContrasenia, activo, rolUsuarios);
+        this.puedeCrear = puedeCrear;
+        this.dibujosCreados = new HashSet<>();
+        this.dibujosPintados = new HashSet<>();
+    }
+
     public UsuarioNormal(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear, HashSet<Integer> dibujosCreados, HashSet<Integer> dibujosPintados) {
         super(idUsuario, nombre, salt, hash, activo, rolUsuarios);
         this.puedeCrear = puedeCrear;
-        this.dibujosCreados = dibujosCreados;
-        this.dibujosPintados = dibujosPintados;
+        this.dibujosCreados = new HashSet<>(dibujosCreados);
+        this.dibujosPintados = new HashSet<>(dibujosPintados);
+    }
+
+    public UsuarioNormal(int idUsuario, String nombre, ContraseniaHash hashContrasenia, boolean activo, RolUsuarios rolUsuarios, boolean puedeCrear, HashSet<Integer> dibujosCreados, HashSet<Integer> dibujosPintados) {
+        super(idUsuario, nombre, hashContrasenia, activo, rolUsuarios);
+        this.puedeCrear = puedeCrear;
+        this.dibujosCreados = new HashSet<>(dibujosCreados);
+        this.dibujosPintados = new HashSet<>(dibujosPintados);
     }
 
 
@@ -63,16 +79,16 @@ public class UsuarioNormal extends Usuario {
         this.puedeCrear = puedeCrear;
     }
 
-    public HashSet<Integer> getDibujosCreados() {
-        return dibujosCreados;
+    public Set<Integer> getDibujosCreados() {
+        return Collections.unmodifiableSet(dibujosCreados);
     }
 
     public void setDibujosCreados(HashSet<Integer> dibujosCreados) {
         this.dibujosCreados = dibujosCreados;
     }
 
-    public HashSet<Integer> getDibujosPintados() {
-        return dibujosPintados;
+    public Set<Integer> getDibujosPintados() {
+        return Collections.unmodifiableSet(dibujosPintados);
     }
 
     public void setDibujosPintados(HashSet<Integer> dibujosPintados) {
@@ -121,24 +137,6 @@ public class UsuarioNormal extends Usuario {
     }
 
 
-
-    /// recorrer el hashset -> solo para prueba
-
-    public void mostrarHashsetDibuCreados()
-    {
-        for (Integer id : dibujosCreados)
-        {
-            System.out.println("\nID dibujo creado: " + id);
-        }
-    }
-
-    public void mostrarHashsetDibuPintados()
-    {
-        for (Integer id : dibujosPintados)
-        {
-            System.out.println("\nID dibujo pintado: " + id);
-        }
-    }
 
     @Override
     public String toString() {

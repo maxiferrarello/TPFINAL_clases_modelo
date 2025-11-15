@@ -1,7 +1,9 @@
-package JSONManagement.Mappers;
+package models.JSONManagement.Mappers;
 
-import enumerators.PermisosAdmin;
-import enumerators.RolUsuarios;
+import models.enumerators.PermisosAdmin;
+import models.enumerators.RolUsuarios;
+import models.exceptions.InvalidOrMissingHashPasswordException;
+import models.exceptions.NullMapperValueException;
 import models.UsuarioAdministrador;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,6 +34,13 @@ public class UsuarioAdministradorMapper extends AbstractMapper<UsuarioAdministra
             jsonObject.put("registroAcciones",
                     CollectionsMapper.mapToJSONObject(usuarioAdministrador.getRegistroAcciones()));
         } catch (JSONException e){
+            System.err.println("Error al serializar un administrador:");
+            e.printStackTrace();
+        } catch (InvalidOrMissingHashPasswordException e){
+            System.err.println("Error al ingresar la contrasenia de un administrador:");
+            e.printStackTrace();
+        } catch (NullMapperValueException e){
+            System.err.println("Error al mapear el registro de acciones de un administrador:");
             e.printStackTrace();
         }
 
@@ -58,6 +67,13 @@ public class UsuarioAdministradorMapper extends AbstractMapper<UsuarioAdministra
             usuarioAdministrador.setRegistroAcciones((TreeMap<LocalDateTime, String>) CollectionsMapper.jsonObjectToMap(
                             jsonObject.getJSONObject("registroAcciones"), LocalDateTime.class, String.class));
         } catch (JSONException e){
+            System.err.println("Error al deserializar un administrador:");
+            e.printStackTrace();
+        } catch (IllegalArgumentException e){
+            System.err.println("El valor JSON para 'RolUsuario' o 'PermisosUsuario' no es válido para el enum correspondiente.");
+            e.printStackTrace();
+        } catch (NullMapperValueException e){
+            System.err.println("Error al mapear el registro de acciones de un administrador:");
             e.printStackTrace();
         }
 
@@ -74,6 +90,7 @@ public class UsuarioAdministradorMapper extends AbstractMapper<UsuarioAdministra
                 jsonArray.put(objectToJSONObject(usuarioAdministrador));
             }
         } catch (JSONException e){
+            System.err.println("Error al serializar una lista de administradores:");
             e.printStackTrace();
         }
 
@@ -89,6 +106,7 @@ public class UsuarioAdministradorMapper extends AbstractMapper<UsuarioAdministra
                 usuarioAdministradores.add(jsonObjectToObject(jsonArray.getJSONObject(i)));
             }
         } catch (JSONException e){
+            System.err.println("Error al deserializar una lista de administradore:");
             e.printStackTrace();
         }
 

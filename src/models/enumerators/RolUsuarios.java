@@ -1,4 +1,4 @@
-package enumerators;
+package models.enumerators;
 
 public enum RolUsuarios {
     NORMAL,

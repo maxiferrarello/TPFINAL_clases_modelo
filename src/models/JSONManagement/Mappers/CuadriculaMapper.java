@@ -1,4 +1,4 @@
-package JSONManagement.Mappers;
+package models.JSONManagement.Mappers;
 
 import models.Cuadricula;
 import org.json.JSONArray;
@@ -18,6 +18,7 @@ public class CuadriculaMapper extends AbstractMapper<Cuadricula> {
             jsonObject.put("indiceY", cuadricula.getIndiceY());
             jsonObject.put("color", cuadricula.getColor());
         } catch (JSONException e) {
+            System.err.println("Error al serializar una cuadricula:");
             e.printStackTrace();
         }
         return jsonObject;
@@ -31,6 +32,7 @@ public class CuadriculaMapper extends AbstractMapper<Cuadricula> {
             cuadricula.setIndiceY(jsonObject.getInt("indiceY"));
             cuadricula.setColor(jsonObject.getString("color"));
         } catch (JSONException e) {
+            System.err.println("Error al deserializar una cuadricula:");
             e.printStackTrace();
         }
         return cuadricula;
@@ -47,6 +49,7 @@ public class CuadriculaMapper extends AbstractMapper<Cuadricula> {
                 jsonArray.put(objectToJSONObject(cuadricula));
             }
         } catch (JSONException e) {
+            System.err.println("Error al serializar una lista de cuadriculas:");
             e.printStackTrace();
         }
         return jsonArray;
@@ -60,6 +63,7 @@ public class CuadriculaMapper extends AbstractMapper<Cuadricula> {
                 cuadriculas.add(jsonObjectToObject(jsonArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
+            System.err.println("Error al deserializar una lista de cuadriculas:");
             e.printStackTrace();
         }
         return cuadriculas;

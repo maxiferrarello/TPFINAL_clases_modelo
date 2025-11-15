@@ -6,8 +6,8 @@ package controllers;
 
 import models.Cuadricula;
 import models.Dibujo;
-import exceptions.MissingKeyOrValueException;
-import exceptions.MissingSearchException;
+import models.exceptions.MissingKeyOrValueException;
+import models.exceptions.MissingSearchException;
 
 public class GestorLienzo {
 

@@ -1,6 +1,8 @@
-package JSONManagement.Mappers;
+package models.JSONManagement.Mappers;
 
-import enumerators.RolUsuarios;
+import models.enumerators.RolUsuarios;
+import models.exceptions.InvalidOrMissingHashPasswordException;
+import models.exceptions.NullMapperValueException;
 import models.UsuarioNormal;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,6 +32,13 @@ public class UsuarioNormalMapper extends AbstractMapper<UsuarioNormal>{
             jsonObject.put("dibujosCreados", CollectionsMapper.setToJSONArray(usuarioNormal.getDibujosCreados()));
             jsonObject.put("dibujosPintados", CollectionsMapper.setToJSONArray(usuarioNormal.getDibujosPintados()));
         } catch (JSONException e){
+            System.err.println("Error al serializar un usuario normal:");
+            e.printStackTrace();
+        } catch (InvalidOrMissingHashPasswordException e){
+            System.err.println("Error al ingresar la contrasenia de un usuario normal:");
+            e.printStackTrace();
+        } catch (NullMapperValueException e){
+            System.err.println("Error al mapear los dibujos pintados o creados de un usuario normal:");
             e.printStackTrace();
         }
 
@@ -57,6 +66,13 @@ public class UsuarioNormalMapper extends AbstractMapper<UsuarioNormal>{
             usuarioNormal.setDibujosPintados((HashSet<Integer>)
                     CollectionsMapper.jsonArrayToSet(jsonObject.getJSONArray("dibujosPintados"), Integer.class));
         } catch (JSONException e){
+            System.err.println("Error al deserializar un usuario normal:");
+            e.printStackTrace();
+        } catch (IllegalArgumentException e){
+            System.err.println("El valor JSON para 'RolUsuario' no es válido para el enum RolUsuarios.");
+            e.printStackTrace();
+        } catch (NullMapperValueException e){
+            System.err.println("Error al mapear los dibujos pintados o creados de un usuario normal:");
             e.printStackTrace();
         }
 
@@ -73,6 +89,7 @@ public class UsuarioNormalMapper extends AbstractMapper<UsuarioNormal>{
                 jsonArray.put(objectToJSONObject(usuarioNormal));
             }
         } catch (JSONException e){
+            System.err.println("Error al serializar un lista de usuarios normales:");
             e.printStackTrace();
         }
 
@@ -88,6 +105,7 @@ public class UsuarioNormalMapper extends AbstractMapper<UsuarioNormal>{
                 usuarioNormales.add(jsonObjectToObject(jsonArray.getJSONObject(i)));
             }
         } catch (JSONException e){
+            System.err.println("Error al deserializar un lista de usuarios normales:");
             e.printStackTrace();
         }
 

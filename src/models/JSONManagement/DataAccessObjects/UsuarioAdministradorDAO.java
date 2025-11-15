@@ -1,7 +1,7 @@
-package JSONManagement.DataAccessObjects;
+package models.JSONManagement.DataAccessObjects;
 
-import JSONManagement.Mappers.UsuarioAdministradorMapper;
-import JSONManagement.ReadWriteOperations;
+import models.JSONManagement.Mappers.UsuarioAdministradorMapper;
+import models.JSONManagement.ReadWriteOperations;
 import models.UsuarioAdministrador;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +34,11 @@ public class UsuarioAdministradorDAO implements ITranslatorDAO<UsuarioAdministra
         try {
             tokener = ReadWriteOperations.readFile(fileName);
             usuarioAdministrador = usuarioAdministradorMapper.jsonObjectToObject(new JSONObject(tokener));
-        } catch (JSONException | FileNotFoundException e){
+        } catch (JSONException e){
+            System.err.println("Error al leer el archivo " + fileName + " y deserializarlo a un objeto:");
+            e.printStackTrace();
+        } catch (FileNotFoundException e){
+            System.err.println("Error al buscar el archivo " + fileName + ":");
             e.printStackTrace();
         }
 
@@ -49,7 +53,11 @@ public class UsuarioAdministradorDAO implements ITranslatorDAO<UsuarioAdministra
         try {
             tokener = ReadWriteOperations.readFile(fileName);
             usuarioAdministradores = usuarioAdministradorMapper.jsonArrayToList(new JSONArray(tokener));
-        } catch (JSONException | FileNotFoundException e){
+        } catch (JSONException e){
+            System.err.println("Error al leer el archivo " + fileName + " y deserializarlo a una lista:");
+            e.printStackTrace();
+        } catch (FileNotFoundException e){
+            System.err.println("Error al buscar el archivo " + fileName + ":");
             e.printStackTrace();
         }
 

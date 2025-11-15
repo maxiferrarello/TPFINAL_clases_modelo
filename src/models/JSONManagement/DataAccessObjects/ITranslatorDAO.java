@@ -1,4 +1,4 @@
-package JSONManagement.DataAccessObjects;
+package models.JSONManagement.DataAccessObjects;
 
 import java.util.List;
 

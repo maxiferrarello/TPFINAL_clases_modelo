@@ -1,5 +1,6 @@
-package JSONManagement.Mappers;
+package models.JSONManagement.Mappers;
 
+import models.exceptions.InvalidOrMissingHashPasswordException;
 import models.ContraseniaHash;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,7 @@ public class ContraseniaHashMapper extends AbstractMapper<ContraseniaHash>{
             jsonObject.put("hash", contraseniaHash.getHash());
             jsonObject.put("salt", contraseniaHash.getSalt());
         } catch (JSONException e){
+            System.err.println("Error al serializar una contrasenia:");
             e.printStackTrace();
         }
 
@@ -29,9 +31,15 @@ public class ContraseniaHashMapper extends AbstractMapper<ContraseniaHash>{
         ContraseniaHash contraseniaHash = new ContraseniaHash();
 
         try {
-            contraseniaHash.setHash(jsonObject.getString("hash"));
-            contraseniaHash.setSalt(jsonObject.getString("salt"));
+            String hash = jsonObject.getString("hash");
+            String salt = jsonObject.getString("salt");
+
+            contraseniaHash = new ContraseniaHash(hash,salt);
         } catch (JSONException e){
+            System.err.println("Error al deserializar una contrasenia:");
+            e.printStackTrace();
+        } catch (InvalidOrMissingHashPasswordException e){
+            System.err.println("Error en el formato del hash o salt de la contrasenia guardada:");
             e.printStackTrace();
         }
 
@@ -48,6 +56,7 @@ public class ContraseniaHashMapper extends AbstractMapper<ContraseniaHash>{
                 jsonArray.put(objectToJSONObject(contraseniaHash));
             }
         } catch (JSONException e){
+            System.err.println("Error al serializar la lista de contrasenias:");
             e.printStackTrace();
         }
 
@@ -63,6 +72,7 @@ public class ContraseniaHashMapper extends AbstractMapper<ContraseniaHash>{
                 contraseniaHashes.add(jsonObjectToObject(jsonArray.getJSONObject(i)));
             }
         } catch (JSONException e){
+            System.err.println("Error al deserializar la lista de contrasenias:");
             e.printStackTrace();
         }
 

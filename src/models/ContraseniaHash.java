@@ -1,15 +1,23 @@
 package models;
 
+import models.exceptions.InvalidOrMissingHashPasswordException;
+
+import java.util.Objects;
+
 public class ContraseniaHash {
-    private String hash;
-    private String salt;
+    private final String hash;
+    private final String salt;
 
     public ContraseniaHash(){
         this.hash = "";
         this.salt = "";
     }
 
-    public ContraseniaHash(String hash, String salt) {
+    public ContraseniaHash(String hash, String salt) throws InvalidOrMissingHashPasswordException {
+        if (hash == null || hash.isEmpty() || salt == null || salt.isEmpty()) {
+            throw new InvalidOrMissingHashPasswordException("Ni Hash ni Salt pueden ser nulos o vacíos.");
+        }
+
         this.hash = hash;
         this.salt = salt;
     }
@@ -18,16 +26,19 @@ public class ContraseniaHash {
         return hash;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
-    }
-
     public String getSalt() {
         return salt;
     }
 
-    public void setSalt(String salt) {
-        this.salt = salt;
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ContraseniaHash that)) return false;
+        return Objects.equals(hash, that.hash) && Objects.equals(salt, that.salt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(hash, salt);
     }
 
     @Override

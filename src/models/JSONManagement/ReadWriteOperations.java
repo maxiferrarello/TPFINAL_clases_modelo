@@ -1,4 +1,4 @@
-package JSONManagement;
+package models.JSONManagement;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

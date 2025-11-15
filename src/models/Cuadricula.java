@@ -18,6 +18,12 @@ public class Cuadricula implements Comparable<Cuadricula> {
         this.color = "#FFFFFF";
     }
 
+    public Cuadricula(int indiceX, int indiceY) {
+        this.indiceX = indiceX;
+        this.indiceY = indiceY;
+        this.color = "#FFFFFF";
+    }
+
     public Cuadricula(int indiceX, int indiceY, String color) {
         this.indiceX = indiceX;
         this.indiceY = indiceY;

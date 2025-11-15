@@ -1,6 +1,7 @@
 package models;
 
-import enumerators.RolUsuarios;
+import models.enumerators.RolUsuarios;
+import models.exceptions.InvalidOrMissingHashPasswordException;
 
 import java.util.Objects;
 
@@ -29,7 +30,21 @@ public abstract class  Usuario {
     public Usuario(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
-        this.hashContrasena = new ContraseniaHash(hash, salt);
+
+        try {
+            this.hashContrasena = new ContraseniaHash(hash, salt);
+        } catch (InvalidOrMissingHashPasswordException e) {
+            this.hashContrasena = new ContraseniaHash();
+        }
+
+        this.activo = activo;
+        this.rolUsuarios = rolUsuarios;
+    }
+
+    public Usuario(int idUsuario, String nombre, ContraseniaHash hashContrasena, boolean activo, RolUsuarios rolUsuarios) {
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.hashContrasena = hashContrasena;
         this.activo = activo;
         this.rolUsuarios = rolUsuarios;
     }
@@ -54,8 +69,12 @@ public abstract class  Usuario {
         this.nombre = nombre;
     }
 
-    public ContraseniaHash getHashContrasena() {
-        return hashContrasena;
+    public ContraseniaHash getHashContrasena() throws InvalidOrMissingHashPasswordException {
+        try {
+            return new ContraseniaHash(hashContrasena.getHash(), hashContrasena.getSalt());
+        } catch (IllegalArgumentException e) {
+            throw new InvalidOrMissingHashPasswordException("Error al retornar el hash de la contrasenia del usuario " + nombre);
+        }
     }
 
     public void setHashContrasena(ContraseniaHash hashContrasena) {
@@ -84,14 +103,19 @@ public abstract class  Usuario {
     /// Hash y equals
 
     @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof Usuario usuario)) return false;
-        return idUsuario == usuario.idUsuario && activo == usuario.activo && Objects.equals(nombre, usuario.nombre) && Objects.equals(hashContrasena, usuario.hashContrasena) && rolUsuarios == usuario.rolUsuarios;
+    public boolean equals(Object o)
+    {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+
+        Usuario u = (Usuario) o;
+        return idUsuario == u.idUsuario;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsuario, nombre, hashContrasena, activo, rolUsuarios);
+        // Correccion: Los datos dentro de estos metodos deben ser inmutables (para HashSet o HashMap), como la clave primaria
+        return Objects.hash(idUsuario);
     }
 
     @Override

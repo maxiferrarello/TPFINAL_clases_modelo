@@ -1,10 +1,10 @@
 package controllers;
 
-import JSONManagement.DataAccessObjects.UsuarioAdministradorDAO;
-import JSONManagement.DataAccessObjects.UsuarioNormalDAO;
-import JSONManagement.ReadWriteOperations;
-import enumerators.PermisosAdmin;
-import enumerators.RolUsuarios;
+import models.JSONManagement.DataAccessObjects.UsuarioAdministradorDAO;
+import models.JSONManagement.DataAccessObjects.UsuarioNormalDAO;
+import models.JSONManagement.ReadWriteOperations;
+import models.enumerators.PermisosAdmin;
+import models.enumerators.RolUsuarios;
 import models.ContraseniaHash;
 import models.Usuario;
 import models.UsuarioAdministrador;
@@ -88,7 +88,7 @@ public class GestorArchivoUsuario {
     }
 
     public void modificarUsuarioNormal(UsuarioNormal normalModificado){
-        UsuarioNormal normalAModificar = (UsuarioNormal) buscarUsuarioNormal(normalModificado.getIdUsuario());
+        UsuarioNormal normalAModificar = buscarUsuarioNormal(normalModificado.getIdUsuario());
 
         if(normalAModificar != null){
             normales.remove(normalAModificar);

@@ -1,4 +1,4 @@
-package JSONManagement.Mappers;
+package models.JSONManagement.Mappers;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

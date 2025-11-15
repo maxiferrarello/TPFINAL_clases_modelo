@@ -1,7 +1,7 @@
 package models;
 
-import enumerators.PermisosAdmin;
-import enumerators.RolUsuarios;
+import models.enumerators.PermisosAdmin;
+import models.enumerators.RolUsuarios;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class UsuarioAdministrador extends Usuario {
     public UsuarioAdministrador(PermisosAdmin nivelAdmin, TreeMap<LocalDateTime, String> registroAcciones) {
         super();
         this.nivelAdmin = nivelAdmin;
-        this.registroAcciones = registroAcciones;
+        this.registroAcciones = new TreeMap<>(registroAcciones);
     }
 
     public UsuarioAdministrador(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios, PermisosAdmin nivelAdmin)
@@ -43,6 +43,27 @@ public class UsuarioAdministrador extends Usuario {
         super(idUsuario, nombre, salt, hash, activo, rolUsuarios);
         this.nivelAdmin = nivelAdmin;
         this.registroAcciones = new TreeMap<>();
+    }
+
+    public UsuarioAdministrador(int idUsuario, String nombre, String salt, String hash, boolean activo, RolUsuarios rolUsuarios, PermisosAdmin nivelAdmin, TreeMap<LocalDateTime, String> registroAcciones)
+    {
+        super(idUsuario, nombre, salt, hash, activo, rolUsuarios);
+        this.nivelAdmin = nivelAdmin;
+        this.registroAcciones = new TreeMap<>(registroAcciones);
+    }
+
+    public UsuarioAdministrador(int idUsuario, String nombre, ContraseniaHash hashContrasenia, boolean activo, RolUsuarios rolUsuarios, PermisosAdmin nivelAdmin)
+    {
+        super(idUsuario, nombre, hashContrasenia, activo, rolUsuarios);
+        this.nivelAdmin = nivelAdmin;
+        this.registroAcciones = new TreeMap<>();
+    }
+
+    public UsuarioAdministrador(int idUsuario, String nombre, ContraseniaHash hashContrasenia, boolean activo, RolUsuarios rolUsuarios, PermisosAdmin nivelAdmin,TreeMap<LocalDateTime, String> registroAcciones)
+    {
+        super(idUsuario, nombre, hashContrasenia, activo, rolUsuarios);
+        this.nivelAdmin = nivelAdmin;
+        this.registroAcciones = new TreeMap<>(registroAcciones);
     }
 
 
@@ -81,18 +102,13 @@ public class UsuarioAdministrador extends Usuario {
         registroAcciones.put(fechaHora, accion);
     }
 
-    public boolean eliminarAccionDelRegistro(LocalDateTime fechaHora, String accion) // Correcciones de Maxi
+    public boolean eliminarAccionDelRegistro(LocalDateTime fechaHora, String accion)
     {
         LocalDateTime claveAborrar = null;
 
         for (Map.Entry<LocalDateTime, String> entry : registroAcciones.entrySet()) {
-
-            LocalDateTime fecha = entry.getKey();
-
-            if (fecha.toLocalDate().equals(fechaHora.toLocalDate())
-                    && entry.getValue().equals(accion)) {
-
-                claveAborrar = fecha;
+            if (entry.getKey().equals(fechaHora) && entry.getValue().equals(accion)) {  // Corrección: se debe comprobar la fecha completa
+                claveAborrar = entry.getKey();
                 break;
             }
         }
@@ -105,19 +121,18 @@ public class UsuarioAdministrador extends Usuario {
         return false;
     }
 
-    public List<String> buscarAcciones(LocalDateTime fechaIngresada)
+    public void eliminarAccionDelRegistro(LocalDateTime fechaHora) {
+        registroAcciones.remove(fechaHora);
+    }
+
+    public List<String> buscarAccionesDelDia(LocalDateTime fechaIngresada)  // Se lo ajustó a una búsqueda más precisa
     {
-        List<String> accionEncontrada = new ArrayList<>();
+        LocalDateTime inicioDia = fechaIngresada.toLocalDate().atStartOfDay();
+        LocalDateTime finDia = inicioDia.plusDays(1);
 
-        for (Map.Entry<LocalDateTime, String> entrada : registroAcciones.entrySet())
-        {
-            LocalDateTime fechaHora = entrada.getKey();
+        Map<LocalDateTime, String> accionesEncontradas = registroAcciones.subMap(inicioDia, finDia);
 
-            if (fechaHora.equals(fechaIngresada)) {
-                accionEncontrada.add(entrada.getValue());
-            }
-        }
-        return accionEncontrada;
+        return new ArrayList<>(accionesEncontradas.values());
     }
 
     @Override

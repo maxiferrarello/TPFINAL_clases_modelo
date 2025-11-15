@@ -1,5 +1,6 @@
-package JSONManagement.Mappers;
+package models.JSONManagement.Mappers;
 
+import models.exceptions.NullMapperValueException;
 import models.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,9 +19,9 @@ public class CollectionsMapper {
     }
 
 
-    public static JSONObject mapToJSONObject(Map<?, ?> map) {
+    public static JSONObject mapToJSONObject(Map<?, ?> map) throws NullMapperValueException {
         if (map == null) {
-            return null;
+            throw new NullMapperValueException("El map ingresado es nulo. Serializacion cancelada");
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -51,9 +52,9 @@ public class CollectionsMapper {
         return jsonObject;
     }
 
-    public static JSONArray setToJSONArray(Set<?> set) {
+    public static JSONArray setToJSONArray(Set<?> set) throws NullMapperValueException {
         if (set == null) {
-            return null;
+            throw new NullMapperValueException("El set ingresado es nulo. Serializacion cancelada");
         }
 
         JSONArray jsonArray = new JSONArray();
@@ -77,9 +78,11 @@ public class CollectionsMapper {
         return jsonArray;
     }
 
-    public static <K, V> Map<K, V> jsonObjectToMap(JSONObject jsonObject, Class<K> keyClass, Class<V> valueClass) {
+    public static <K, V> Map<K, V> jsonObjectToMap(JSONObject jsonObject, Class<K> keyClass, Class<V> valueClass)
+            throws NullMapperValueException {
+
         if (jsonObject == null) {
-            return null;
+            throw new NullMapperValueException("El objecto json no puede ser nulo. Error al deserializar a el map");
         }
 
         Map<K, V> map = new TreeMap<>();
@@ -97,9 +100,9 @@ public class CollectionsMapper {
         return map;
     }
 
-    public static <T> Set<T> jsonArrayToSet(JSONArray jsonArray, Class<T> elementClass) {
+    public static <T> Set<T> jsonArrayToSet(JSONArray jsonArray, Class<T> elementClass) throws NullMapperValueException {
         if (jsonArray == null) {
-            return null;
+            throw new NullMapperValueException("El arreglo json no puede ser nulo. Error al deserializar a el set");
         }
 
         Set<T> set = new HashSet<>();
@@ -129,9 +132,9 @@ public class CollectionsMapper {
     }
 
     @SuppressWarnings("unchecked")
-    private static <V> V convertValue(Object jsonValue, Class<V> valueClass) {
+    private static <V> V convertValue(Object jsonValue, Class<V> valueClass) throws NullMapperValueException {
         if (jsonValue == null) {
-            return null;
+            throw new NullMapperValueException("Valor json nulo. Error en la conversion");
         }
 
         if (valueClass.isInstance(jsonValue)) {
@@ -153,12 +156,12 @@ public class CollectionsMapper {
                         AbstractMapper<V> mapper = mapperClass.getConstructor().newInstance();
                         return mapper.jsonObjectToObject(jsonObject);
                     } catch (Exception e) {
-                        System.err.println("Error al instanciar o deserializar con Mapper para " + valueClass.getSimpleName() + ": " + e.getMessage());
-                        return null;
+                        throw new NullMapperValueException("Error al instanciar o deserializar con Mapper para " + valueClass.getSimpleName() + ": " + e.getMessage());
                     }
                 }
             }
             default -> {
+                throw new NullMapperValueException("Clase del valor json inidntificable");
             }
         }
 
