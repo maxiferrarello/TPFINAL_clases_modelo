@@ -4,7 +4,6 @@ import models.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class CollectionsMapper {
@@ -83,7 +82,7 @@ public class CollectionsMapper {
             return null;
         }
 
-        Map<K, V> map = new HashMap<>();
+        Map<K, V> map = new TreeMap<>();
         Iterator<String> keys = jsonObject.keys();
 
         while (keys.hasNext()) {
