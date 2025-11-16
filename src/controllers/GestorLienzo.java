@@ -38,6 +38,7 @@ public class GestorLienzo {
         this.colorSeleccionado = "#000000";
         this.paraPintar = false;
         this.dibujo = new Dibujo();
+        dibujo.setAnchoCuadricula(tamanioActual);
     }
 
     public GestorLienzo(Dibujo dibujo) {
@@ -45,6 +46,7 @@ public class GestorLienzo {
         this.colorSeleccionado = "#000000";
         this.paraPintar = true;
         this.dibujo = dibujo != null ? dibujo : new Dibujo();
+        dibujo.setAnchoCuadricula(tamanioActual);
     }
 
     public GestorLienzo(int tamanioActual, String colorSeleccionado, boolean paraPintar, Dibujo dibujo) {
@@ -52,6 +54,7 @@ public class GestorLienzo {
         this.colorSeleccionado = validarColorIngresado(colorSeleccionado) ? colorSeleccionado : "#000000";
         this.paraPintar = paraPintar;
         this.dibujo = dibujo != null ? dibujo : new Dibujo();
+        dibujo.setAnchoCuadricula(tamanioActual);
     }
 
 
@@ -129,27 +132,25 @@ public class GestorLienzo {
         dibujo = gestorArchivoDibujo.buscarDibujoEnLista(idDibujo);
     }
 
-    public void dibujarPixel(int ejeX, int ejeY) {
+    public void dibujarPixel(int ejeX, int ejeY) throws MissingKeyOrValueException{
         if (dibujo == null) {
             dibujo = new Dibujo();
         }
 
         // Asegurar que el color esté en la paleta
         if (!dibujo.estaColorEnMap(colorSeleccionado)) {
-            try {
-                dibujo.insertarColor(colorSeleccionado);
-            } catch (MissingKeyOrValueException e) {
-                e.printStackTrace();
-            }
+            dibujo.insertarColor(colorSeleccionado);
         }
 
         try {
             dibujo.cambiarColorCuadricula(ejeX, ejeY, colorSeleccionado);
+            System.err.println("Se pintó una cuadrícula existente");
         } catch (MissingSearchException e) {
             dibujo.ingresarCuadricula(new Cuadricula(ejeX, ejeY, colorSeleccionado));
+            System.err.println("Se pintó una nueva cuadrícula");
+        } finally {
+            guardarDatos();
         }
-
-        guardarDatos();
     }
 
     public void borrarPixel(int ejeX, int ejeY) {

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public class GestorArchivoDibujo {
     private static final String NAME_FILE = "Dibujos.json";
+    private static GestorArchivoUsuario gestorArchivoUsuario = new GestorArchivoUsuario();
 
     private final DibujoDAO dibujoDAO = new DibujoDAO();
     private ArrayList<Dibujo> dibusjosGuardados = new ArrayList<>();
@@ -19,10 +20,12 @@ public class GestorArchivoDibujo {
     public void crearDibujo(int idPropietario, String nombreDibujo, boolean activo, int anchoCuadricula){
         int idGenerado = generarIdUnico();
 
-        dibusjosGuardados.add(new Dibujo(idGenerado, idPropietario, nombreDibujo, activo, anchoCuadricula));
+        if(gestorArchivoUsuario.buscarUsuario(idPropietario) != null) {
+            dibusjosGuardados.add(new Dibujo(idGenerado, idPropietario, nombreDibujo, activo, anchoCuadricula));
 
-        guardarCambios();
-        new GestorArchivoUsuario().agregarDibujoCreado(idPropietario, idPropietario);
+            guardarCambios();
+            gestorArchivoUsuario.agregarDibujoCreado(idPropietario, idGenerado);
+        }
     }
 
     public void modificarDibujo(Dibujo dibujoModificado){

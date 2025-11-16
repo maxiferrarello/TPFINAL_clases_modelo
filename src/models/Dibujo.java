@@ -183,7 +183,10 @@ public class Dibujo {
     }
 
     public boolean ingresarCuadricula(Cuadricula cuadricula){
-        return cuadriculas.add(cuadricula);
+        if(anchoCuadricula*2 < cuadriculas.size()) {
+            return cuadriculas.add(cuadricula);
+        }
+        return false;
     }
 
     public void cambiarColorCuadricula(int indiceX, int indiceY, String color) throws MissingSearchException

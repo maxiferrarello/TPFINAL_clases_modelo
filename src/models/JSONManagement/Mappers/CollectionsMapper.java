@@ -1,10 +1,12 @@
 package models.JSONManagement.Mappers;
 
+import models.JSONManagement.DataAccessObjects.ITranslatorDAO;
 import models.exceptions.NullMapperValueException;
 import models.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class CollectionsMapper {
@@ -37,13 +39,20 @@ public class CollectionsMapper {
             } else if (value instanceof Set) {
                 serializedValue = setToJSONArray((Set<?>) value);
             } else if (value != null && isCustomObject(value)) {
-                // Si el valor es una instancia de una clase personalizada (clases modelo),
-                // DEBE tener un metodo 'objectToJSONObject()' implementado.
-                try {
-                    serializedValue = value.getClass().getMethod("objectToJSONObject").invoke(value);
-                } catch (Exception e) {
-                    System.err.println("Error al serializar objeto personalizado: " + e.getMessage());
-                    return null;
+                Class<?> modelClass = value.getClass();
+                if (MAPPER_REGISTRY.containsKey(modelClass)) {
+                    try {
+                        Class<? extends AbstractMapper<?>> mapperClass = MAPPER_REGISTRY.get(modelClass);
+                        AbstractMapper<?> mapper = mapperClass.getConstructor().newInstance();
+
+                        @SuppressWarnings("unchecked")
+                        AbstractMapper<Object> typedMapper = (AbstractMapper<Object>) mapper;
+
+                        serializedValue = typedMapper.objectToJSONObject(value);
+                    } catch (Exception e) {
+                        System.err.println("Error al serializar objeto " + modelClass.getSimpleName() + " usando su Mapper:");
+                        throw new NullMapperValueException("Fallo en serialización por Mapper: " + e.getMessage());
+                    }
                 }
             }
 
@@ -66,10 +75,21 @@ public class CollectionsMapper {
             } else if (item instanceof Set) {
                 serializedItem = setToJSONArray((Set<?>) item);
             } else if (item != null && isCustomObject(item)) {
-                try {
-                    serializedItem = item.getClass().getMethod("objectToJSONObject").invoke(item);
-                } catch (Exception e) {
-                    System.err.println("Error al serializar objeto personalizado: " + e.getMessage());
+                Class<?> modelClass = item.getClass();
+                if (MAPPER_REGISTRY.containsKey(modelClass)) {
+                    try {
+                        Class<? extends AbstractMapper<?>> mapperClass = MAPPER_REGISTRY.get(modelClass);
+                        AbstractMapper<?> mapper = mapperClass.getConstructor().newInstance();
+
+                        @SuppressWarnings("unchecked")
+                        AbstractMapper<Object> typedMapper = (AbstractMapper<Object>) mapper;
+
+                        serializedItem = typedMapper.objectToJSONObject(item);
+
+                    } catch (Exception e) {
+                        System.err.println("Error al serializar objeto " + modelClass.getSimpleName() + " usando su Mapper:");
+                        throw new NullMapperValueException("Fallo en serialización por Mapper: " + e.getMessage());
+                    }
                 }
             }
 
@@ -161,7 +181,7 @@ public class CollectionsMapper {
                 }
             }
             default -> {
-                throw new NullMapperValueException("Clase del valor json inidntificable");
+                throw new NullMapperValueException("Clase del valor json inidentificable");
             }
         }
 

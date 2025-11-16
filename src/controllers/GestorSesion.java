@@ -9,7 +9,7 @@ public class GestorSesion {
     private static final GestorArchivoUsuario gestorArchivoUsuario = new GestorArchivoUsuario();
 
     public boolean inicioSesion(String nombreUsuario, String contraseniaIngresada, RolUsuarios rolUsuarios) throws InvalidOrMissingHashPasswordException {
-        Usuario usuario = gestorArchivoUsuario.buscarUsuario(nombreUsuario, rolUsuarios);
+        Usuario usuario = gestorArchivoUsuario.buscarUsuario(nombreUsuario);
 
         if(usuario == null) return false;
 
