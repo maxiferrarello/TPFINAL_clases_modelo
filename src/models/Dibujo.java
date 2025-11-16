@@ -183,7 +183,7 @@ public class Dibujo {
     }
 
     public boolean ingresarCuadricula(Cuadricula cuadricula){
-        if(anchoCuadricula*2 < cuadriculas.size()) {
+        if(cuadriculas.size() < anchoCuadricula*2) {
             return cuadriculas.add(cuadricula);
         }
         return false;
