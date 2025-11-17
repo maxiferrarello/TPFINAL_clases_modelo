@@ -75,15 +75,20 @@ public class MainMenuController {
         lblUsuario.setText("Usuario: " + nombre);
         lblRol.setText("Rol: " + rol.toString());
 
-        // Obtener ID del usuario
+        // Obtener ID del usuario (PARA AMBOS ROLES)
         if (rol == RolUsuarios.NORMAL) {
             UsuarioNormal usuario = gestorArchivoUsuario.buscarUsuarioNormal(nombre);
             if (usuario != null) {
                 this.idUsuario = usuario.getIdUsuario();
             }
+        } else if (rol == RolUsuarios.ADMIN) {
+            UsuarioAdministrador admin = gestorArchivoUsuario.buscarUsuarioAdmin(nombre);
+            if (admin != null) {
+                this.idUsuario = admin.getIdUsuario();
+            }
         }
 
-        System.out.println("👤 Usuario configurado: " + nombre + " (ID: " + idUsuario + ", Rol: " + rol + ")");
+        System.out.println("Usuario configurado: " + nombre + " (ID: " + idUsuario + ", Rol: " + rol + ")");
 
         if (rol == RolUsuarios.ADMIN) {
             btnCrearDibujo.setVisible(true);
@@ -94,6 +99,7 @@ public class MainMenuController {
 
         cargarDibujos();
     }
+
 
     private void cargarDibujos() {
         try {
@@ -360,8 +366,7 @@ public class MainMenuController {
 
             // Pasar el ID del usuario al controlador
             CreateDibujoController controller = loader.getController();
-            // TODO: Obtener el ID real del usuario desde GestorArchivoUsuario
-            controller.setUsuarioCreador(1); // Por ahora ID hardcodeado
+            controller.setUsuarioCreador(this.idUsuario);
 
             Stage stage = new Stage();
             Scene scene = new Scene(root);
@@ -485,8 +490,7 @@ public class MainMenuController {
 
             // Pasar el dibujo y el usuario al controlador
             ColorearDibujoController controller = loader.getController();
-            // TODO: Obtener el ID real del usuario logueado
-            controller.setDibujoYUsuario(dibujo, 1); // Por ahora ID hardcodeado
+            controller.setDibujoYUsuario(dibujo, this.idUsuario);
 
             Stage stage = new Stage();
             Scene scene = new Scene(root);
