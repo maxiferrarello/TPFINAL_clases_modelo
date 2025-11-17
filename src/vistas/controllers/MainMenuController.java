@@ -1,5 +1,6 @@
 package vistas.controllers;
 
+import vistas.controllers.GestionUsuariosController;
 import controllers.GestorArchivoDibujo;
 import controllers.GestorArchivoUsuario;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import models.Cuadricula;
 import models.Dibujo;
 import models.UsuarioNormal;
 import models.enumerators.RolUsuarios;
+import models.UsuarioAdministrador;
 
 
 import vistas.controllers.CreateDibujoController;
@@ -395,10 +397,40 @@ public class MainMenuController {
 
     @FXML
     private void handleGestionarUsuarios(ActionEvent event) {
-        System.out.println("👥 Gestionar usuarios...");
-        // TODO: Abrir ventana de gestión de usuarios
-        mostrarInfo("Función en desarrollo", "La gestión de usuarios se implementará próximamente");
+        try {
+            System.out.println("👥 Abriendo gestión de usuarios...");
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/GestionUsuariosView.fxml"));
+            Parent root = loader.load();
+
+            GestionUsuariosController controller = loader.getController();
+
+            // Obtener el admin actual
+            UsuarioAdministrador admin = gestorArchivoUsuario.buscarUsuarioAdmin(nombreUsuario);
+            if (admin != null) {
+                controller.setAdminActual(admin.getIdUsuario(), admin.getNivelAdmin());
+            }
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setTitle("Gestión de Usuarios");
+            stage.setResizable(false);
+
+            stage.setOnHidden(e -> {
+                cargarDibujos();
+            });
+
+            stage.show();
+
+        } catch (Exception e) {
+            System.err.println("❌ Error al abrir gestión de usuarios:");
+            e.printStackTrace();
+            mostrarError("Error: " + e.getMessage());
+        }
     }
+
 
     @FXML
     private void handleCerrarSesion(ActionEvent event) {

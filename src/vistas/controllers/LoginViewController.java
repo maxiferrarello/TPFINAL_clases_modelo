@@ -1,6 +1,8 @@
 package vistas.controllers;
 
 import controllers.GestorSesion;
+import controllers.GestorArchivoUsuario;
+import models.Usuario;
 import models.enumerators.RolUsuarios;
 import models.exceptions.InvalidOrMissingHashPasswordException;
 import javafx.event.ActionEvent;
@@ -15,22 +17,14 @@ import java.io.IOException;
 
 public class LoginViewController {
 
-    @FXML
-    private TextField txtUsuario;
-
-    @FXML
-    private PasswordField txtContrasenia;
-
-    @FXML
-    private Label lblError;
-
-    @FXML
-    private Button btnIniciarSesion;
-
-    @FXML
-    private Hyperlink linkRegistro;
+    @FXML private TextField txtUsuario;
+    @FXML private PasswordField txtContrasenia;
+    @FXML private Label lblError;
+    @FXML private Button btnIniciarSesion;
+    @FXML private Hyperlink linkRegistro;
 
     private GestorSesion gestorSesion;
+    private GestorArchivoUsuario gestorArchivoUsuario;
     private RolUsuarios rolSeleccionado;
     private String nombreUsuarioLogueado;
 
@@ -38,10 +32,10 @@ public class LoginViewController {
     public void initialize() {
         try {
             gestorSesion = new GestorSesion();
+            gestorArchivoUsuario = new GestorArchivoUsuario();
             lblError.setVisible(false);
             rolSeleccionado = RolUsuarios.NORMAL;
 
-            // Listener para Enter
             txtUsuario.setOnAction(event -> handleIniciarSesion(null));
             txtContrasenia.setOnAction(event -> handleIniciarSesion(null));
 
@@ -59,31 +53,54 @@ public class LoginViewController {
         String usuario = txtUsuario.getText().trim();
         String contrasenia = txtContrasenia.getText();
 
-        System.out.println("\n🔍 Intentando iniciar sesión:");
+        System.out.println("\n🔐 Intentando iniciar sesión:");
         System.out.println("   - Usuario: " + usuario);
 
-        // Validaciones
         if (usuario.isEmpty() || contrasenia.isEmpty()) {
             mostrarError("Por favor, complete todos los campos");
             return;
         }
 
         try {
-            // Primero intenta como usuario NORMAL
-            System.out.println("📝 Intentando login como NORMAL...");
-            boolean exito = gestorSesion.inicioSesion(usuario, contrasenia, RolUsuarios.NORMAL);
+            // Buscar usuario (ADMIN primero, luego NORMAL)
+            Usuario usuarioEncontrado = gestorArchivoUsuario.buscarUsuario(usuario, RolUsuarios.ADMIN);
+            if (usuarioEncontrado == null) {
+                usuarioEncontrado = gestorArchivoUsuario.buscarUsuario(usuario, RolUsuarios.NORMAL);
+            }
 
-            // Si no funciona como NORMAL, intenta como ADMIN
-            if (!exito) {
-                System.out.println("📝 Intentando login como ADMIN...");
+            // Verificar si existe
+            if (usuarioEncontrado == null) {
+                System.err.println("❌ Usuario no encontrado");
+                mostrarError("Usuario o contraseña incorrectos");
+                limpiarContrasenia();
+                return;
+            }
+
+            // Verificar si está activo
+            if (!usuarioEncontrado.isActivo()) {
+                System.err.println("❌ Usuario INACTIVO: " + usuario);
+                mostrarError("Tu cuenta está PENDIENTE DE ACTIVACIÓN.\n\nUn administrador debe aprobar tu cuenta para que puedas iniciar sesión.\n\nPor favor, espera a ser activado.");
+                limpiarContrasenia();
+                return;
+            }
+
+            // Intentar login según el rol encontrado
+            boolean exito = false;
+
+            if (usuarioEncontrado.getRolUsuarios() == RolUsuarios.ADMIN) {
+                System.out.println("🔑 Intentando login como ADMIN...");
                 exito = gestorSesion.inicioSesion(usuario, contrasenia, RolUsuarios.ADMIN);
                 if (exito) {
                     rolSeleccionado = RolUsuarios.ADMIN;
                     System.out.println("✅ Login exitoso como ADMIN");
                 }
             } else {
-                rolSeleccionado = RolUsuarios.NORMAL;
-                System.out.println("✅ Login exitoso como NORMAL");
+                System.out.println("🔑 Intentando login como NORMAL...");
+                exito = gestorSesion.inicioSesion(usuario, contrasenia, RolUsuarios.NORMAL);
+                if (exito) {
+                    rolSeleccionado = RolUsuarios.NORMAL;
+                    System.out.println("✅ Login exitoso como NORMAL");
+                }
             }
 
             if (exito) {
@@ -91,7 +108,7 @@ public class LoginViewController {
                 nombreUsuarioLogueado = usuario;
                 abrirMenuPrincipal();
             } else {
-                System.err.println("❌ Login falló - Usuario o contraseña incorrectos");
+                System.err.println("❌ Contraseña incorrecta");
                 mostrarError("Usuario o contraseña incorrectos");
                 limpiarContrasenia();
             }
@@ -138,7 +155,6 @@ public class LoginViewController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/MainMenuView.fxml"));
             Parent root = loader.load();
 
-            // Pasar datos al MainMenuController
             MainMenuController controller = loader.getController();
             controller.setUsuarioLogueado(nombreUsuarioLogueado, rolSeleccionado);
 
@@ -174,12 +190,6 @@ public class LoginViewController {
     private void limpiarContrasenia() {
         txtContrasenia.clear();
         txtContrasenia.requestFocus();
-    }
-
-    private void limpiarCampos() {
-        txtUsuario.clear();
-        txtContrasenia.clear();
-        lblError.setVisible(false);
     }
 
     public RolUsuarios getRolSeleccionado() {

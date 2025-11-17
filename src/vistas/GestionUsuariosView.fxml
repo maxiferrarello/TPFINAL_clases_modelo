@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="vistas.controllers.GestionUsuariosController"
+            prefWidth="900" prefHeight="650"
+            style="-fx-background-color: white;">
+
+    <!-- TOP -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #f5f5f5; -fx-padding: 15 20; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;">
+            <Label text="Gestión de Usuarios" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblPermisos" text="Permisos: ---" style="-fx-font-size: 12px; -fx-text-fill: #666;"/>
+            <Button fx:id="btnVolver" text="Volver" onAction="#handleVolver" style="-fx-background-color: #999; -fx-text-fill: white; -fx-padding: 8 20; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <!-- CENTER -->
+    <center>
+        <VBox spacing="15" style="-fx-padding: 20;">
+
+            <!-- Botones de acción -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="btnCrearUsuario" text="+ Crear Usuario" onAction="#handleCrearUsuario" 
+                        style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="txtBuscar" promptText="Buscar usuario..." prefWidth="200"/>
+                <Button text="Buscar" onAction="#handleBuscar" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-padding: 8 15;"/>
+            </HBox>
+
+            <!-- Tabla de usuarios -->
+            <TableView fx:id="tableUsuarios" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150"/>
+                    <TableColumn fx:id="colRol" text="Rol" prefWidth="100"/>
+                    <TableColumn fx:id="colPermisos" text="Permisos" prefWidth="120"/>
+                    <TableColumn fx:id="colActivo" text="Estado" prefWidth="80"/>
+                    <TableColumn fx:id="colDibujos" text="Dibujos" prefWidth="100"/>
+                    <TableColumn fx:id="colAcciones" text="Acciones" prefWidth="200"/>
+                </columns>
+            </TableView>
+
+            <!-- Stats -->
+            <HBox spacing="20" alignment="CENTER">
+                <Label fx:id="lblTotalUsuarios" text="Total: 0" style="-fx-font-size: 12px; -fx-text-fill: #666;"/>
+                <Label fx:id="lblUsuariosActivos" text="Activos: 0" style="-fx-font-size: 12px; -fx-text-fill: #27ae60;"/>
+                <Label fx:id="lblUsuariosInactivos" text="Inactivos: 0" style="-fx-font-size: 12px; -fx-text-fill: #e74c3c;"/>
+            </HBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

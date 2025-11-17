@@ -1,6 +1,9 @@
 package vistas.controllers;
 
 import controllers.GestorSesion;
+import controllers.GestorArchivoUsuario;
+import models.enumerators.PermisosAdmin;
+import models.enumerators.RolUsuarios;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,59 +17,36 @@ import java.io.IOException;
 
 public class RegisterViewController {
 
-    @FXML
-    private TextField txtUsuario;
-
-    @FXML
-    private PasswordField txtContrasenia;
-
-    @FXML
-    private PasswordField txtConfirmarContrasenia;
-
-    @FXML
-    private ComboBox<String> cmbTipoUsuario;
-
-    @FXML
-    private Label lblMensaje;
-
-    @FXML
-    private Label lblUsuarioInfo;
-
-    @FXML
-    private Label lblContraseniaInfo;
-
-    @FXML
-    private Label lblTipoInfo;
-
-    @FXML
-    private Button btnRegistrar;
-
-    @FXML
-    private Button btnCancelar;
-
-    @FXML
-    private Hyperlink linkLogin;
+    @FXML private TextField txtUsuario;
+    @FXML private PasswordField txtContrasenia;
+    @FXML private PasswordField txtConfirmarContrasenia;
+    @FXML private ComboBox<String> cmbTipoUsuario;
+    @FXML private Label lblMensaje;
+    @FXML private Label lblUsuarioInfo;
+    @FXML private Label lblContraseniaInfo;
+    @FXML private Label lblTipoInfo;
+    @FXML private Button btnRegistrar;
+    @FXML private Button btnCancelar;
+    @FXML private Hyperlink linkLogin;
 
     private GestorSesion gestorSesion;
+    private GestorArchivoUsuario gestorArchivoUsuario;
 
     @FXML
     public void initialize() {
         try {
-            // ✅ Inicializar GestorSesion
             gestorSesion = new GestorSesion();
+            gestorArchivoUsuario = new GestorArchivoUsuario();
             lblMensaje.setVisible(false);
 
-            // Configurar ComboBox con tipos de usuario
             cmbTipoUsuario.setItems(FXCollections.observableArrayList(
                     "Usuario Normal",
                     "Administrador"
             ));
             cmbTipoUsuario.getSelectionModel().selectFirst();
 
-            // Listener para cambiar el texto informativo
             cmbTipoUsuario.setOnAction(event -> actualizarInfoTipoUsuario());
 
-            // Validación en tiempo real
             txtContrasenia.textProperty().addListener((obs, oldVal, newVal) -> {
                 if (!newVal.isEmpty()) {
                     validarContraseniaEnTiempoReal(newVal);
@@ -89,12 +69,10 @@ public class RegisterViewController {
         String confirmarContrasenia = txtConfirmarContrasenia.getText();
         String tipoUsuario = cmbTipoUsuario.getValue();
 
-        System.out.println("\n🔍 Intentando registrar usuario:");
+        System.out.println("\n🔐 Intentando registrar usuario:");
         System.out.println("   - Usuario: " + usuario);
         System.out.println("   - Tipo: " + tipoUsuario);
-        System.out.println("   - Longitud contraseña: " + contrasenia.length());
 
-        // Validaciones
         if (!validarCampos(usuario, contrasenia, confirmarContrasenia, tipoUsuario)) {
             return;
         }
@@ -104,21 +82,32 @@ public class RegisterViewController {
 
             // Registrar según el tipo de usuario seleccionado
             if (tipoUsuario.equals("Usuario Normal")) {
-                System.out.println("📝 Registrando Usuario Normal...");
-                exito = gestorSesion.registroSesionUsuarioNormal(usuario, contrasenia, true);
+                System.out.println("🔒 Registrando Usuario Normal (INACTIVO)...");
+                exito = gestorSesion.registroSesionUsuarioNormal(usuario, contrasenia, false);
             } else if (tipoUsuario.equals("Administrador")) {
-                System.out.println("📝 Registrando Administrador...");
-                exito = gestorSesion.registroSesionUsuarioAdmin(usuario, contrasenia, true);
+                System.out.println("🔒 Registrando SUPERADMIN (ACTIVO)...");
+                // Los admins se crean como SUPERADMIN y ACTIVOS directamente
+                exito = gestorArchivoUsuario.crearUsuarioAdmin(
+                        usuario,
+                        contrasenia,
+                        true, // ACTIVO
+                        RolUsuarios.ADMIN,
+                        PermisosAdmin.SUPERADMIN
+                );
             }
 
             if (exito) {
-                System.out.println("✅ Usuario registrado exitosamente!");
-                mostrarExito("✓ Usuario registrado exitosamente");
+                System.out.println("✅ Usuario registrado");
 
-                // Esperar 2 segundos y volver al login
+                if (tipoUsuario.equals("Administrador")) {
+                    mostrarExito("✓ SUPERADMIN creado exitosamente!\n\nPuedes iniciar sesión inmediatamente.");
+                } else {
+                    mostrarExito("✓ Cuenta creada exitosamente!\n\nTu cuenta está PENDIENTE DE ACTIVACIÓN.\nUn administrador debe aprobarla para que puedas iniciar sesión.");
+                }
+
                 new Thread(() -> {
                     try {
-                        Thread.sleep(2000);
+                        Thread.sleep(4000);
                         javafx.application.Platform.runLater(this::volverAlLogin);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -126,10 +115,7 @@ public class RegisterViewController {
                 }).start();
             } else {
                 System.err.println("❌ Registro falló");
-                mostrarError("No se pudo registrar el usuario.\n" +
-                        "• El nombre de usuario puede estar en uso\n" +
-                        "• La contraseña no cumple los requisitos\n" +
-                        "• Verifique la consola para más detalles");
+                mostrarError("No se pudo registrar el usuario.\n• El nombre de usuario puede estar en uso\n• Verifique los requisitos");
             }
 
         } catch (Exception e) {
@@ -171,7 +157,6 @@ public class RegisterViewController {
             return false;
         }
 
-        // Validar requisitos según GestorSesion.validarContrasenia()
         if (contrasenia.length() <= 8) {
             mostrarError("La contraseña debe tener más de 8 caracteres");
             return false;
