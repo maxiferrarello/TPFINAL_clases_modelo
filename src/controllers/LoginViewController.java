@@ -1,7 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import controllers.GestorSesion;
-import controllers.GestorArchivoUsuario;
 import models.Usuario;
 import models.enumerators.RolUsuarios;
 import models.exceptions.InvalidOrMissingHashPasswordException;

@@ -1,6 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import controllers.GestorArchivoUsuario;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

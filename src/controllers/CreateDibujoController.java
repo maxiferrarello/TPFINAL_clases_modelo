@@ -1,7 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import controllers.GestorArchivoDibujo;
-import controllers.GestorLienzo;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

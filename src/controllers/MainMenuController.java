@@ -1,8 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import vistas.controllers.GestionUsuariosController;
-import controllers.GestorArchivoDibujo;
-import controllers.GestorArchivoUsuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +18,6 @@ import models.UsuarioNormal;
 import models.enumerators.RolUsuarios;
 import models.UsuarioAdministrador;
 
-
-import vistas.controllers.CreateDibujoController;
-import vistas.controllers.ColorearDibujoController;
 
 import java.io.IOException;
 import java.util.ArrayList;

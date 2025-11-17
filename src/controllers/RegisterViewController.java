@@ -1,7 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import controllers.GestorSesion;
-import controllers.GestorArchivoUsuario;
 import models.enumerators.PermisosAdmin;
 import models.enumerators.RolUsuarios;
 import javafx.collections.FXCollections;
