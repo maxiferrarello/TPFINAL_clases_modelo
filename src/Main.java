@@ -10,7 +10,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             // Cargar el archivo FXML de Login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/LoginView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
             Parent root = loader.load();
 
             // Crear la escena

@@ -1,7 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import controllers.GestorArchivoDibujo;
-import controllers.GestorArchivoUsuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;

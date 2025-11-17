@@ -1,8 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import vistas.controllers.GestionUsuariosController;
-import controllers.GestorArchivoDibujo;
-import controllers.GestorArchivoUsuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +18,6 @@ import models.UsuarioNormal;
 import models.enumerators.RolUsuarios;
 import models.UsuarioAdministrador;
 
-
-import vistas.controllers.CreateDibujoController;
-import vistas.controllers.ColorearDibujoController;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -355,7 +349,7 @@ public class MainMenuController {
         try {
             System.out.println("🎨 Abriendo ventana de creación...");
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/CreateDibujoView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/CreateDibujoView.fxml"));
             Parent root = loader.load();
 
             // Pasar el ID del usuario al controlador
@@ -400,7 +394,7 @@ public class MainMenuController {
         try {
             System.out.println("👥 Abriendo gestión de usuarios...");
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/GestionUsuariosView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/GestionUsuariosView.fxml"));
             Parent root = loader.load();
 
             GestionUsuariosController controller = loader.getController();
@@ -443,7 +437,7 @@ public class MainMenuController {
             if (confirmacion.showAndWait().get() == ButtonType.OK) {
                 System.out.println("👋 Cerrando sesión de: " + nombreUsuario);
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/LoginView.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
                 Parent root = loader.load();
 
                 Stage stage = (Stage) btnCerrarSesion.getScene().getWindow();
@@ -480,7 +474,7 @@ public class MainMenuController {
         try {
             System.out.println("🖌️ Abriendo dibujo para colorear: " + dibujo.getNombreDibujo());
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/ColorearDibujoView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ColorearDibujoView.fxml"));
             Parent root = loader.load();
 
             // Pasar el dibujo y el usuario al controlador
@@ -521,7 +515,7 @@ public class MainMenuController {
         try {
             System.out.println("✏️ Editando dibujo: " + dibujo.getNombreDibujo());
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/CreateDibujoView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/CreateDibujoView.fxml"));
             Parent root = loader.load();
 
             CreateDibujoController controller = loader.getController();

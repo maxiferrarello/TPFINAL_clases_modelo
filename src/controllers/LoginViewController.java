@@ -1,7 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import controllers.GestorSesion;
-import controllers.GestorArchivoUsuario;
 import models.Usuario;
 import models.enumerators.RolUsuarios;
 import models.exceptions.InvalidOrMissingHashPasswordException;
@@ -57,9 +55,9 @@ public class LoginViewController {
         }
 
         try {
-            Usuario usuarioEncontrado = gestorArchivoUsuario.buscarUsuario(usuario, RolUsuarios.ADMIN);
+            Usuario usuarioEncontrado = gestorArchivoUsuario.buscarUsuario(usuario);
             if (usuarioEncontrado == null) {
-                usuarioEncontrado = gestorArchivoUsuario.buscarUsuario(usuario, RolUsuarios.NORMAL);
+                usuarioEncontrado = gestorArchivoUsuario.buscarUsuario(usuario);
             }
 
             if (usuarioEncontrado == null) {
@@ -77,12 +75,12 @@ public class LoginViewController {
             boolean exito = false;
 
             if (usuarioEncontrado.getRolUsuarios() == RolUsuarios.ADMIN) {
-                exito = gestorSesion.inicioSesion(usuario, contrasenia, RolUsuarios.ADMIN);
+                exito = gestorSesion.inicioSesion(usuario, contrasenia);
                 if (exito) {
                     rolSeleccionado = RolUsuarios.ADMIN;
                 }
             } else {
-                exito = gestorSesion.inicioSesion(usuario, contrasenia, RolUsuarios.NORMAL);
+                exito = gestorSesion.inicioSesion(usuario, contrasenia);
                 if (exito) {
                     rolSeleccionado = RolUsuarios.NORMAL;
                 }
@@ -112,7 +110,7 @@ public class LoginViewController {
     @FXML
     private void handleRegistro(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/RegisterView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/RegisterView.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) linkRegistro.getScene().getWindow();
@@ -136,7 +134,7 @@ public class LoginViewController {
 
     private void abrirMenuPrincipal() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/MainMenuView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MainMenuView.fxml"));
             Parent root = loader.load();
 
             MainMenuController controller = loader.getController();

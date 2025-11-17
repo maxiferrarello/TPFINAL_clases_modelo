@@ -130,9 +130,11 @@ public class Dibujo {
     {
         if(!validarEntradaColor(color)) {
             throw new InvalidColorException("El color ingresado es invalido");
-        } else if (estaColorEnMap(color)) {
-            throw new InvalidColorException("El color ya se encuentra en la seleccion");
         }
+        // Capa de codigo conflictiva
+        /*else if (estaColorEnMap(color)) {
+            throw new InvalidColorException("El color ya se encuentra en la seleccion");
+        }*/
 
         int claveAux = clavesColores.isEmpty() ? 0 : clavesColores.lastKey() + 1;
         clavesColores.put(claveAux, color.toUpperCase());

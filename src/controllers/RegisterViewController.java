@@ -1,7 +1,5 @@
-package vistas.controllers;
+package controllers;
 
-import controllers.GestorSesion;
-import controllers.GestorArchivoUsuario;
 import models.enumerators.PermisosAdmin;
 import models.enumerators.RolUsuarios;
 import javafx.collections.FXCollections;
@@ -218,7 +216,7 @@ public class RegisterViewController {
 
     private void volverAlLogin() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/LoginView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/LoginView.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) linkLogin.getScene().getWindow();
