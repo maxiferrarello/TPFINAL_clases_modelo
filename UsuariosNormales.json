@@ -1,0 +1,16 @@
+[{
+    "RolUsuario": "NORMAL",
+    "contraseniaHash": {
+        "salt": "SNmazyVw5bzKgxStIdf4MQ==",
+        "hash": "h2PsauV9J8h5ZamX5rgKFMw2mIsnBL58YuaP32FVE8k="
+    },
+    "dibujosPintados": [
+        4,
+        5
+    ],
+    "idUsuario": 3,
+    "puedeCrear": false,
+    "nombre": "usuario",
+    "dibujosCreados": [],
+    "activo": true
+}]

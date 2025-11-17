@@ -1,0 +1,38 @@
+[
+    {
+        "PermisosAdmin": "SUPERADMIN",
+        "RolUsuario": "ADMIN",
+        "contraseniaHash": {
+            "salt": "tpZHCzxpyYD6Ps/U1vFHEQ==",
+            "hash": "NUiWSl8GVPqoEdhn16lH/GFgJrxEOlCKz11jsFz7eok="
+        },
+        "idUsuario": 7,
+        "registroAcciones": {},
+        "nombre": "superadmin",
+        "activo": true
+    },
+    {
+        "PermisosAdmin": "SOLICITARIO",
+        "RolUsuario": "ADMIN",
+        "contraseniaHash": {
+            "salt": "KhZufLVplQCEyuHoLP6PDQ==",
+            "hash": "82Q6qGF8/cbQjvF6A7084HU7ShjlMB9hAZRZrFDWlyk="
+        },
+        "idUsuario": 2,
+        "registroAcciones": {},
+        "nombre": "test2",
+        "activo": true
+    },
+    {
+        "PermisosAdmin": "VISUALIZANTE",
+        "RolUsuario": "ADMIN",
+        "contraseniaHash": {
+            "salt": "efCncTkCGCLqfkwmdYs96w==",
+            "hash": "9ARPHtbgafSusLYisy18o1r17dySr18LsNzTOy/lAD4="
+        },
+        "idUsuario": 4,
+        "registroAcciones": {},
+        "nombre": "test3",
+        "activo": true
+    }
+]
