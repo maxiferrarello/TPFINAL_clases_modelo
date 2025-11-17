@@ -788,11 +788,24 @@
         "anchoCuadricula": 8
     },
     {
+        "idDibujo": 5,
+        "clavesColores": {
+            "0": "#FFFFFF",
+            "1": "#000000"
+        },
+        "cuadriculas": [],
+        "idPropietario": 7,
+        "nombreDibujo": "Corazon",
+        "activo": true,
+        "anchoCuadricula": 8
+    },
+    {
         "idDibujo": 4,
         "clavesColores": {
             "0": "#FFFFFF",
             "1": "#000000",
-            "2": "#FF0000"
+            "2": "#FF0000",
+            "3": "#661A33"
         },
         "cuadriculas": [
             {
@@ -1342,229 +1355,31 @@
         "anchoCuadricula": 16
     },
     {
-        "idDibujo": 5,
+        "idDibujo": 6,
         "clavesColores": {
             "0": "#FFFFFF",
             "1": "#000000"
         },
-        "cuadriculas": [],
-        "idPropietario": 7,
-        "nombreDibujo": "Corazon",
-        "activo": true,
-        "anchoCuadricula": 8
-    },
-    {
-        "idDibujo": 6,
-        "clavesColores": {
-            "0": "#FFFFFF",
-            "1": "#000000",
-            "2": "#FF0000"
-        },
         "cuadriculas": [
             {
                 "color": "#000000",
-                "indiceY": 1,
-                "indiceX": 2
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 3,
-                "indiceX": 4
-            },
-            {
-                "color": "#000000",
-                "indiceY": 5,
-                "indiceX": 6
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 2,
-                "indiceX": 2
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 4,
-                "indiceX": 4
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 3,
-                "indiceX": 2
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 5,
-                "indiceX": 4
-            },
-            {
-                "color": "#000000",
-                "indiceY": 2,
-                "indiceX": 0
-            },
-            {
-                "color": "#FFFFFF",
-                "indiceY": 4,
-                "indiceX": 2
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 6,
-                "indiceX": 4
-            },
-            {
-                "color": "#000000",
-                "indiceY": 3,
-                "indiceX": 0
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 5,
-                "indiceX": 2
-            },
-            {
-                "color": "#000000",
                 "indiceY": 7,
-                "indiceX": 4
-            },
-            {
-                "color": "#000000",
-                "indiceY": 4,
-                "indiceX": 0
-            },
-            {
-                "color": "#000000",
-                "indiceY": 6,
-                "indiceX": 2
-            },
-            {
-                "color": "#000000",
-                "indiceY": 2,
                 "indiceX": 7
             },
             {
                 "color": "#000000",
-                "indiceY": 1,
-                "indiceX": 5
+                "indiceY": 8,
+                "indiceX": 8
             },
             {
                 "color": "#000000",
-                "indiceY": 3,
+                "indiceY": 8,
                 "indiceX": 7
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 2,
-                "indiceX": 5
-            },
-            {
-                "color": "#000000",
-                "indiceY": 4,
-                "indiceX": 7
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 3,
-                "indiceX": 5
-            },
-            {
-                "color": "#000000",
-                "indiceY": 2,
-                "indiceX": 3
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 4,
-                "indiceX": 5
-            },
-            {
-                "color": "#000000",
-                "indiceY": 1,
-                "indiceX": 1
-            },
-            {
-                "color": "#FFFFFF",
-                "indiceY": 3,
-                "indiceX": 3
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 5,
-                "indiceX": 5
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 2,
-                "indiceX": 1
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 4,
-                "indiceX": 3
-            },
-            {
-                "color": "#000000",
-                "indiceY": 6,
-                "indiceX": 5
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 3,
-                "indiceX": 1
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 5,
-                "indiceX": 3
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 4,
-                "indiceX": 1
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 6,
-                "indiceX": 3
-            },
-            {
-                "color": "#000000",
-                "indiceY": 5,
-                "indiceX": 1
-            },
-            {
-                "color": "#000000",
-                "indiceY": 7,
-                "indiceX": 3
-            },
-            {
-                "color": "#000000",
-                "indiceY": 1,
-                "indiceX": 6
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 2,
-                "indiceX": 6
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 3,
-                "indiceX": 6
-            },
-            {
-                "color": "#000000",
-                "indiceY": 2,
-                "indiceX": 4
-            },
-            {
-                "color": "#FF0000",
-                "indiceY": 4,
-                "indiceX": 6
             }
         ],
-        "idPropietario": 7,
-        "nombreDibujo": "Corazon",
+        "idPropietario": 0,
+        "nombreDibujo": "hola",
         "activo": true,
-        "anchoCuadricula": 8
+        "anchoCuadricula": 16
     }
 ]

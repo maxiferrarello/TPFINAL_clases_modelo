@@ -16,7 +16,7 @@ public class Main extends Application {
             // Crear la escena
             Scene scene = new Scene(root, 500, 600);
 
-            // Cargar CSS (opcional)
+            // Cargar CSS
             try {
                 scene.getStylesheets().add(getClass().getResource("/resources/styles/login.css").toExternalForm());
                 System.out.println("CSS cargado correctamente");

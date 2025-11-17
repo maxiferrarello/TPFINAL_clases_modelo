@@ -76,7 +76,6 @@ public class CollectionsMapper {
             } else if (item instanceof Set) {
                 serializedItem = setToJSONArray((Set<?>) item);
             } else if (item != null && isCustomObject(item)) {
-                // ✅ CORREGIDO: Usar el mapper del registro
                 Class<?> itemClass = item.getClass();
                 if (MAPPER_REGISTRY.containsKey(itemClass)) {
                     try {
