@@ -19,6 +19,7 @@ import models.Dibujo;
 import models.UsuarioNormal;
 import models.enumerators.RolUsuarios;
 
+
 import vistas.controllers.CreateDibujoController;
 import vistas.controllers.ColorearDibujoController;
 
@@ -485,9 +486,36 @@ public class MainMenuController {
     }
 
     private void editarDibujo(Dibujo dibujo) {
-        System.out.println("✏️ Editando dibujo: " + dibujo.getNombreDibujo());
-        // TODO: Abrir ventana de edición
-        mostrarInfo("Editar dibujo", "Función en desarrollo");
+        try {
+            System.out.println("✏️ Editando dibujo: " + dibujo.getNombreDibujo());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/vistas/CreateDibujoView.fxml"));
+            Parent root = loader.load();
+
+            CreateDibujoController controller = loader.getController();
+            controller.setDibujoParaEditar(dibujo);
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+
+            stage.setScene(scene);
+            stage.setTitle("Editar: " + dibujo.getNombreDibujo());
+            stage.setResizable(false);
+
+            stage.setOnHidden(e -> {
+                gestorArchivoDibujo = new GestorArchivoDibujo();
+                cargarDibujos();
+            });
+
+            System.out.println("DEBUG: A punto de mostrar ventana...");
+            stage.show();
+            System.out.println("DEBUG: Ventana mostrada");
+
+        } catch (Exception e) {
+            System.err.println("❌ ERROR en editarDibujo:");
+            e.printStackTrace();
+            mostrarError("Error: " + e.getMessage());
+        }
     }
 
     private void eliminarDibujo(Dibujo dibujo) {
